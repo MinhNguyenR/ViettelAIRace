@@ -1,0 +1,47 @@
+name: mock_challenge_v0
+status: pre_official_problem
+
+target:
+  contest: Viettel AI Race 2026
+  track: llm-2026
+  phase: phase_1
+  expected_submission_type: FILE_DOCKER_COMPOSE
+
+hardware:
+  local_gpu: unknown
+  target_gpu: NVIDIA H200
+  gpu_count: TBD
+  cpu_limit: TBD
+  memory_limit: TBD
+
+serving:
+  api: openai_compatible
+  default_port: 8000
+  model_id: PLACEHOLDER_DO_NOT_RUN
+  runtime_candidates:
+    - vLLM
+    - SGLang
+    - TensorRT-LLM
+
+workload:
+  personas:
+    - chat
+    - coding
+    - agent
+    - long_context
+  prompt_distribution:
+    short: 0.45
+    medium: 0.35
+    long: 0.20
+  decode_distribution:
+    short: 0.50
+    medium: 0.35
+    long: 0.15
+  concurrency_grid: [1, 4, 8, 16, 32, 64, 128, 256, 512]
+
+metrics:
+  latency: [ttft_ms, tpot_ms, latency_ms, p50, p90, p95, p99]
+  throughput: [requests_per_second, tokens_per_second, decode_tokens_per_second]
+  stability: [success_rate, timeout_rate, error_rate, crash_count]
+  gpu: [gpu_utilization, sm_utilization, memory_bandwidth, hbm_bandwidth]
+  memory: [vram_usage, kv_cache_usage, kv_cache_hit_rate, fragmentation]

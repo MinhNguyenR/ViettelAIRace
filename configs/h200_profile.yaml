@@ -1,0 +1,34 @@
+name: h200_profile
+status: placeholder_until_btc_environment_is_known
+
+gpu:
+  name: NVIDIA H200
+  memory_gb: 141
+  interconnect: TBD
+  mig_enabled: TBD
+  nvlink: TBD
+
+runtime_defaults:
+  dtype: auto
+  tensor_parallel_size: TBD
+  gpu_memory_utilization: 0.90
+  max_model_len: TBD
+  enable_prefix_caching: candidate
+  enable_chunked_prefill: candidate
+
+profiling:
+  required:
+    - nvidia-smi
+    - nvidia-container-toolkit
+    - dcgm-exporter
+    - prometheus
+    - grafana
+  optional:
+    - nsight-systems
+    - nsight-compute
+    - tensorrt-llm-benchmarks
+
+notes:
+  - Do not assume H200 means unlimited memory; production traces can still OOM through KV cache.
+  - Pin image versions after BTC publishes base environment.
+  - Treat FP8/quantization as experiment candidates, not defaults.
