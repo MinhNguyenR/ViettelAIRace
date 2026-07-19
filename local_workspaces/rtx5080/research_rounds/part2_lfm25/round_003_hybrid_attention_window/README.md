@@ -1,6 +1,8 @@
 # Round 003 - Hybrid Full-Attention Window
 
-Status: complete local research candidate; not promoted to a submission.
+Status: complete local research family; not promoted to a submission. Follow-up
+R003a establishes `4096` as the score-max branch and keeps `8192` as the
+semantics-balanced branch.
 
 ## Question
 
@@ -47,6 +49,19 @@ as inferred; BTC has not supplied the exact request-body construction. The
 candidate therefore remains research-only until these two uncertainties are
 resolved.
 
+## R003a Frontier
+
+The follow-up window sweep confirms that the performance effect scales with a
+smaller window. Two full `4096` replays score `64.5121/64.5886`, a mean gain of
+`+8.0054` points over the repeated unbounded control. However, `4096` loses two
+paired long-context retrieval cases. Window `8192` loses none of the four
+control-pass cases and remains the balanced branch at a repeated `61.1708`
+mean. Windows `12288` and `16384` do not retain enough score opportunity;
+`6144` offers an intermediate but weaker quality trade-off.
+
+These results strengthen the mechanism diagnosis but do not remove the rules
+or semantic block. R002k remains the submission incumbent.
+
 ## Files
 
 - `round_plan.md`: gates, result and follow-up 003a.
@@ -57,4 +72,6 @@ resolved.
 - `scripts/run_full_replay.sh`: full/bounded append-only or independent replay.
 - `scripts/analyze_full_replay.py`: score-component and per-turn analysis.
 - `analysis/full_replay_comparison.json`: four-run full bracket.
+- `subrounds/subround_003a_window_sweetspot/`: complete score/quality frontier
+  for windows `4096..16384`.
 - `failed_actions.md`: invalid probes and unresolved boundaries.

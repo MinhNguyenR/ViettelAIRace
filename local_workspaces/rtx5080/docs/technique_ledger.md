@@ -2059,3 +2059,36 @@ Trade-offs and status:
   nothing.
 - Keep the overlay research-only. Follow-up `R003a` must compare 4096/8192/
   16384 and include a long-context quality decision before any packaging.
+
+## Part 2 R003a Bounded-Attention Frontier
+
+Technique: sweep the causal attention horizon independently on the six full-
+attention layers while preserving ShortConv, precision, prefix cache,
+scheduler, CUDA Graph and fused greedy-head behavior.
+
+Evidence:
+
+```text
+window       full score mean     retrieval losses vs control
+unbounded        56.5450                    baseline
+4096             64.5504                       2
+6144             61.7945 (n=1)                 1
+8192             61.1708                       0
+12288            57.0213 (n=1)                 0
+16384            profile gate failed            0
+```
+
+Effect: `4096` is a stable score ceiling. It lowers repeated TTFT p50/p95 by
+`29.78/81.27ms`, TPOT p95 by `0.818ms`, raises available KV capacity and
+produces a turn-depth score gain from `+1.180` to `+13.514`. The repeated
+score range is only `0.0766` point.
+
+Trade-off: the same hard window removes information the unbounded control can
+retrieve at 5.1k and 7.1k tokens. GPQA inputs below 1k tokens cannot validate
+that boundary. Window `8192` is the balanced branch with no paired losses, but
+it is still not proof of semantic equivalence or rules acceptance.
+
+Carry-forward: preserve `4096` only as a performance upper bound and `8192`
+as a semantics-aware research control. Close scalar window tuning. Keep R002k
+as the submission incumbent and do not package a window until driver, rules
+and target-H200 qualification pass.

@@ -28,6 +28,11 @@ Read this file first for local RTX 5080 lab notes.
   gains `+4.6258` local points over matched controls, while independent 4k
   traffic is neutral/slightly negative. Research-only pending semantic/rules
   review.
+- `../research_rounds/part2_lfm25/round_003_hybrid_attention_window/subrounds/subround_003a_window_sweetspot/README.md`
+  - completed attention-window frontier. `4096` is the repeated local
+  score-max branch at `64.5504` but fails paired long-context retrieval;
+  `8192` is the balanced branch. Neither changes the R002k submission
+  incumbent.
 - `../research_rounds/score_100_program/scoreboard.md` - compact R000-R039
   integration results; I006 seq16/default2048 remains the Portal champion and
   rollback at `51.59`.

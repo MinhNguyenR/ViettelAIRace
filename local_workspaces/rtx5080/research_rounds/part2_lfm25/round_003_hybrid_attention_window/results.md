@@ -160,6 +160,31 @@ The official post-online GPQA gate remains mandatory.
   aim is to find the least aggressive window that retains most of the score
   gain, not to assume `8192` is universally safe.
 
+## Follow-Up R003a Result
+
+R003a completes the requested sweep and replaces the final bullet above with
+measured evidence:
+
+| window | full runs | local score mean | paired retrieval losses | status |
+|---:|---:|---:|---:|---|
+| 4096 | 2 | `64.5504` | `2/14` | score-max, quality/rules blocked |
+| 6144 | 1 | `61.7945` | `1/14` | intermediate; do not carry |
+| 8192 | 2 | `61.1708` | `0/14` | balanced research branch |
+| 12288 | 1 | `57.0213` | `0/14` | dominated by 8192 |
+| 16384 | 0 | profile gate failed | `0/14` | closed before replay |
+
+The two `4096` runs have a narrow `0.0766`-point range and reduce repeated
+control TTFT p50/p95 from `114.26/315.56ms` to `84.49/234.29ms`; TPOT p95
+falls from `4.159ms` to `3.342ms`. Its score gain grows from `+1.180` at turn
+0 to `+13.514` at turn 5, matching the bounded-attention mechanism.
+
+The long-context probe is deliberately interpreted only as paired regression
+evidence because the unbounded control answers `4/14`. It is sufficient to
+reject the claim that `4096` is semantics-neutral, but not sufficient to claim
+that `8192` is universally quality-safe. No R003a image or Compose is opened.
+R002k remains the submission incumbent pending explicit BTC rules/driver
+clarification and target-H200 qualification.
+
 ## Reproduction Paths
 
 - `scripts/run_prefill_process.sh`: isolated six-turn profiling.
@@ -168,3 +193,5 @@ The official post-online GPQA gate remains mandatory.
   `R003_PROMPT_MODE=independent` and `R003_CONVERSATION_LIMIT=30` for the
   4k boundary check.
 - `scripts/analyze_full_replay.py`: score-component and per-turn aggregation.
+- `subrounds/subround_003a_window_sweetspot/analysis/full_replay_frontier.json`:
+  compact full-replay score frontier.

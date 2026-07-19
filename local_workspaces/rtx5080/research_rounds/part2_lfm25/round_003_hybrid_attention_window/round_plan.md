@@ -76,9 +76,12 @@ need a clean target qualification.
 
 ## Follow-Up 003a - Window Sweet-Spot Screen
 
+Status: complete.
+
 This is a separate follow-up, not a retroactive change to the registered
-result. Test `4096`, `8192` and `16384` on the long-context six-turn panel and
-the 100-case quality proxy. Record:
+result. It tested `4096`, `6144`, `8192`, `12288` and `16384` on the
+long-context six-turn panel and a calibrated paired retrieval probe. It
+recorded:
 
 - complete GPU/attention cost by turn;
 - cache capacity and active-request peak;
@@ -86,5 +89,8 @@ the 100-case quality proxy. Record:
 - GPQA parsed accuracy and exact changed-answer count;
 - whether the least aggressive window preserves most of the gain.
 
-Do not open a Portal image until one window passes the long-context quality
-decision and a target-backend/rules review.
+Outcome: `4096` is the repeated score maximum but loses two control-pass
+retrieval cases; `8192` is the balanced branch with no paired losses;
+`16384` fails the performance gate. Do not open a Portal image until one
+window passes a stronger long-context quality decision and a target-backend/
+rules review.

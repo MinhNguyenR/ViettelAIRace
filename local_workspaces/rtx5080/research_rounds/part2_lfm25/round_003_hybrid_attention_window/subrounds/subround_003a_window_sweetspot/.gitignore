@@ -1,0 +1,5 @@
+analysis/*
+!analysis/window_profile_sweep.json
+!analysis/long_context_retrieval.json
+!analysis/full_replay_comparison.json
+!analysis/full_replay_frontier.json

@@ -143,6 +143,11 @@ Read in this order:
       a two-run control mean `56.5450` to `61.1708`, with lower TTFT and TPOT;
       independent 4k traffic is neutral/slightly negative, and long-context
       semantics/rules review still block Portal promotion.
+39. `local_workspaces/rtx5080/research_rounds/part2_lfm25/round_003_hybrid_attention_window/subrounds/subround_003a_window_sweetspot/README.md`
+    - completed the `4096..16384` score/quality frontier. Window `4096`
+      repeats at mean `64.5504` but loses two paired retrieval cases; `8192`
+      remains the balanced branch with no paired losses. R002k remains the
+      submission incumbent and no bounded-window artifact is published.
 
 Do not reuse Qwen-specific numeric sweet spots or artifacts in a Part 2
 submission without a fresh LFM2.5 measurement.

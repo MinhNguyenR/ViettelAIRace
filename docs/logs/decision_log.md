@@ -3336,3 +3336,28 @@ Decision:
   an explicit rules/driver interpretation before promotion;
 - treat the result as a composite bounded-attention plus cache-capacity gain,
   not as a portable H200 FA3 kernel claim.
+
+## 2026-07-19 - Complete R003a Attention-Window Frontier
+
+Evidence:
+
+- repeated `4096` full replay scores `64.5121/64.5886`, mean `64.5504`,
+  versus repeated unbounded control mean `56.5450`;
+- `4096` lowers TTFT p50/p95 by `29.78/81.27ms`, lowers TPOT p95 by
+  `0.818ms`, completes `330/330` graded requests in both runs and has only a
+  `0.0766`-point score range;
+- its gain grows from `+1.180` at turn 0 to `+13.514` at turn 5, consistent
+  with bounded retained-history attention;
+- paired retrieval loses `2/14` control-pass cases at `4096`, `1/14` at
+  `6144`, and none at `8192/12288`; short GPQA never activates a window;
+- `12288` scores only `57.0213`, while `16384` fails the profile saving gate.
+
+Decision:
+
+- keep `4096` as the local score-ceiling research branch, explicitly not
+  quality-safe;
+- retain `8192` as the semantics-balanced research branch;
+- close `6144`, `12288` and `16384` from carry-forward;
+- keep R002k as the Portal incumbent and create no image/Compose until BTC
+  long-context construction, rules acceptability and H200 behavior are
+  resolved.

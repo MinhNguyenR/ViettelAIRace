@@ -2898,3 +2898,21 @@ cover the discarded long-context information, and the official request-history
 semantics remain inferred from metadata. Keep R003 out of the Portal queue
 until the `4096/8192/16384` follow-up, long-context quality check and rules
 review are complete.
+
+### 2026-07-19 - R003a Scalar Window Limits
+
+The `16384` window retains only `40.47%` of the registered `8192` turn-5
+saving and misses the `15ms` opening gate. Window `12288` passes isolated
+profiling but scores only `57.0213` on full replay, demonstrating that one
+conversation's GPU time is not a score proxy. Do not spend more full runs on
+either size without a new mechanism.
+
+One `6144` profile process was excluded because its turn-0 time rose to about
+`81.9ms` where the window was inactive. Do not average process contamination
+into a window effect. The retained A/C profile passes, but the only full replay
+and one lost retrieval case do not justify carrying `6144` over `8192` or
+`4096`.
+
+Window `4096` is performance-positive in two full runs but loses two paired
+retrieval cases. Do not infer quality safety from unchanged short GPQA, and do
+not publish/package this branch before explicit rules and long-context review.

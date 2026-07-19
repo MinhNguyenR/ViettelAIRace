@@ -1374,3 +1374,26 @@ force FlashInfer or TRT-LLM on H200.
   untested. Candidate has a larger KV pool at the same memory fraction.
 - R003 is a local research winner, not a Portal image or Compose. R002k stays
   the submission incumbent.
+
+## Part 2 R003a Completion Checkpoint - 2026-07-19
+
+- Profile, calibrated retrieval and full-replay phases are complete under the
+  fixed 3-core/8-GiB/RTX-5080 envelope.
+- `4096` repeats at `64.5121/64.5886`, zero failures, TTFT p50/p95 mean
+  `84.49/234.29ms` and TPOT p95 mean `3.342ms`.
+- The repeated control mean is `56.5450`; the `4096` gain is `+8.0054`
+  points and exceeds process drift.
+- `4096` loses two paired retrieval cases; `6144` loses one; `8192` and
+  `12288` lose none. The probe is not an absolute accuracy benchmark.
+- `8192` remains the balanced research branch. `4096` is score-max only.
+- No benchmark container remains required, no image/Compose is created, and
+  R002k remains the Portal incumbent.
+
+## Next Recommended Task
+
+Do not tune the scalar window further. Audit whether the bounded-attention
+change is permissible and whether the hidden driver actually sends append-only
+history. If the branch remains eligible, design a semantics-preserving
+alternative that reduces old-token attention work without hard truncation,
+using `8192` as the balanced control and `4096` only as the measured upper
+bound on attainable local score.

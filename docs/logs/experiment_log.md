@@ -3686,3 +3686,25 @@ so the end-to-end gain includes capacity/admission relief in addition to
 bounded attention work. The branch is a strong local research candidate, but
 it remains outside the Portal queue pending long-context quality and rules
 review.
+
+## 2026-07-19 - Part 2 R003a Attention Window Sweet Spot
+
+The profile sweep measured windows `4096/6144/8192/12288/16384` against the
+same unbounded R002k process. Turn-5 complete GPU time was
+`71.141/79.483/81.448/87.440/101.264ms` versus `114.735ms` control. Every
+valid run preserved the exact computed/scheduled-token progression. Window
+`4096` also raised startup KV capacity to about `2.623M` tokens versus
+`1.649M` unbounded.
+
+A calibrated 14-case paired retrieval panel covered actual prompt lengths
+from about 3.1k to 22.3k tokens. Control passed four cases. Windows
+`4096/6144/8192/12288/16384` passed `2/3/4/4/5`; relative to control they lost
+`2/1/0/0/0` cases. This is a regression probe only because control accuracy
+is low.
+
+Full replay scores were `64.5121/64.5886` at `4096`, `61.7945` once at
+`6144`, `61.1708` mean at `8192`, `57.0213` once at `12288`, and `56.5450`
+mean unbounded. The `4096` mean is `+8.0054` points, with TTFT p50/p95
+`84.49/234.29ms` and TPOT p50/p95 `2.318/3.342ms`. The branch is the stable
+local score maximum but fails the paired retrieval gate; `8192` remains the
+balanced research branch. No submission artifact follows.
