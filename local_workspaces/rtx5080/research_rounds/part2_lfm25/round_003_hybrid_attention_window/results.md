@@ -214,3 +214,19 @@ Every request completed. Each candidate lost the same control-pass cases at
 loss. No full replay, image or Compose follows. R002k remains the submission
 incumbent; R003a `4096` remains a score upper bound only and R003 `8192` the
 balanced research branch.
+
+## Follow-Up R003c Result
+
+R003c narrowed the 4096 window to two or three full-attention layers and tested
+six global complements. The early2 placement, with layers 2 and 5 windowed and
+layers 8, 10, 12 and 14 global, was the only candidate that lost zero
+control-pass retrieval cases in two repeats. It completed two full replays
+without failures and scored 58.0922 versus 56.5450 for the unbounded control.
+TTFT p50/p95 improved by 8.81/28.14 ms and TPOT p95 by 0.065 ms.
+
+The other five placements were rejected before full replay after losing two or
+three control-pass cases. The early2 GPQA proxy was 21/100 versus control
+observations of 21/100 and 22/100; this is neutral process noise because the
+proxy prompts are shorter than the window. Keep early2 research-only and close
+layer-placement permutations. The canonical details are in
+subrounds/subround_003c_sparse_window_layers/.

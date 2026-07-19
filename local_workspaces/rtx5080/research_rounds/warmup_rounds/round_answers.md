@@ -760,3 +760,11 @@ The completed R003 `8192` full-attention-window study is recorded at
 It wins the inferred append-only replay but is research-only pending
 long-context quality and rules review. Do not copy its score into legacy
 warmup-round baselines.
+
+## Part 2 R003c Pointer - 2026-07-20
+
+Sparse full-attention layer placement is complete at
+local_workspaces/rtx5080/research_rounds/part2_lfm25/round_003_hybrid_attention_window/subrounds/subround_003c_sparse_window_layers/.
+The early2 placement is a local research reference only: two full replays
+averaged 58.0922 versus 56.5450 for control, with no failures, but the short
+quality proxy cannot certify the 4096-token semantic boundary.

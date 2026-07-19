@@ -1226,3 +1226,9 @@ The completed R003 `8192` full-attention-window study is recorded at
 It wins the inferred append-only replay but is research-only pending
 long-context quality and rules review. It is not a Ready-round submission
 candidate yet.
+
+## Part 2 R003c Pointer - 2026-07-20
+
+R003c is not a Ready-round submission candidate. It narrows a 4096 attention
+window to layers 2 and 5 and improves the local append-only replay modestly,
+but the evidence is target-workload and long-context semantics research only.

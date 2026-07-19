@@ -2119,3 +2119,34 @@ result as negative evidence against sparse global-layer repair. A future
 bounded-attention branch must preserve selected old positions in every affected
 layer, such as a validated sink/prefix retention pattern, and must pass the
 same paired long-context probe before score work.
+
+## Part 2 R003c Sparse Windowed Layer Placement
+
+Technique: apply a 4096 causal window to only two or three of the six LFM2.5
+full-attention layers while leaving the complement global. ShortConv state,
+precision, cache coordinator and decode policy remain fixed.
+
+Evidence:
+
+| placement | windowed layers | turn-5 saving | retrieval losses |
+|---|---|---:|---:|
+| late2 | 12,14 | 18.024 ms | 3/14 |
+| late3 | 10,12,14 | 26.106 ms | 3/14 |
+| spread3 | 2,8,14 | 25.304 ms | 3/14 |
+| early3 | 2,5,8 | 25.269 ms | 2/14 |
+| early2 | 2,5 | 17.724 ms | 0/14 in two repeats |
+| first1 | 2 | 8.957 ms | 3/14 |
+
+early2 completed two full 420-request replays with zero failures and averaged
+58.0922 points versus 56.5450 for the unbounded control. TTFT p50/p95 moved
+from 114.26/315.56 ms to 105.45/287.42 ms; TPOT p95 moved from 4.159 ms to
+4.094 ms. The GPQA proxy was 21/100 against a noisy 21..22/100 control range.
+
+Decision: retain early2 as a research reference only. It is below the
+aggregate 8192 branch and its short quality proxy cannot certify information
+beyond 4096 tokens. Reject further scalar global-complement permutations.
+
+Carry-forward: a next bounded-attention experiment must preserve selected old
+positions in every affected layer, such as a validated sink/prefix retention
+mask, and must repeat the paired long-context retrieval gate before any full
+score or packaging work.

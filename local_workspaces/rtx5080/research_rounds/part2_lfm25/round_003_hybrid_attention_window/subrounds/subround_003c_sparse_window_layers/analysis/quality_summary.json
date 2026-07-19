@@ -1,0 +1,20 @@
+{
+  "schema": "r003c.quality_summary.v1",
+  "candidate": {
+    "label": "early2",
+    "accuracy": 0.21,
+    "correct": 21,
+    "total": 100,
+    "parse_failures": 11,
+    "source": "analysis/quality-early2-20260720-003326/summary.json"
+  },
+  "control": {
+    "accuracy": 0.22,
+    "correct": 22,
+    "total": 100,
+    "parse_failures": 10,
+    "source": "analysis/quality-control-repeat-20260719-195403/summary.json",
+    "observed_range": [0.21, 0.22],
+    "note": "The first control run was 21/100; this is a noisy short-prompt proxy, not a long-context equivalence proof."
+  }
+}

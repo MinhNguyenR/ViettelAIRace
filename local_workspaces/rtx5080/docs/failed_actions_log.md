@@ -2938,6 +2938,18 @@ Decision: reject all placements and skip full replay, image creation and
 Compose work. Future work must preserve selected old information in each
 affected layer.
 
+### 2026-07-20 - R003c Sparse Placement Boundary
+
+The late2, late3, spread3, early3 and first1 placements passed profile
+latency but lost two or three control-pass retrieval cases. They were rejected
+before full replay. early2 lost zero cases in two repeats and was allowed to
+full replay, but remains research-only because the GPQA proxy is shorter than
+the 4096 horizon and the candidate changes long-context semantics.
+
+The first control-repeat retrieval launch also passed a relative output path
+through a Docker bind mount. Docker treated it as an invalid volume name; no
+request was served. The run was discarded and repeated with an absolute path.
+
 Related files:
 
 ```text

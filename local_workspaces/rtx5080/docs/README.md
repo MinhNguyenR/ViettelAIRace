@@ -37,6 +37,10 @@ Read this file first for local RTX 5080 lab notes.
   - completed selective-global placement screen. `global14`, `global2`,
   `global8` and `global2_14` retain the latency gain but all lose the same
   two retrieval cases; no full replay or package was opened.
+- `../research_rounds/part2_lfm25/round_003_hybrid_attention_window/subrounds/subround_003c_sparse_window_layers/README.md`
+  - completed sparse placement screen. early2 windows layers 2 and 5,
+  preserves the paired retrieval cases in two repeats and improves the local
+  full replay modestly; research-only, not a Portal artifact.
 - `../research_rounds/score_100_program/scoreboard.md` - compact R000-R039
   integration results; I006 seq16/default2048 remains the Portal champion and
   rollback at `51.59`.

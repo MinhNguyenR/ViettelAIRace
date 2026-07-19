@@ -1,0 +1,64 @@
+{
+  "schema": "r003c.profile_screen.v1",
+  "control": {
+    "path": "local_workspaces/rtx5080/research_rounds/part2_lfm25/round_003_hybrid_attention_window/analysis/control-c15-timing-20260719-194530",
+    "turn0_ms": 60.781921,
+    "turn5_ms": 114.734528
+  },
+  "candidates": {
+    "late2": {
+      "global_layers": "2,5,8,10",
+      "windowed_layers": "12,14",
+      "turn0_ms": 59.391743,
+      "turn5_ms": 96.710625,
+      "turn5_saving_ms": 18.023903,
+      "kv_cache_tokens": 1695255,
+      "profile_gate": true
+    },
+    "late3": {
+      "global_layers": "2,5,8",
+      "windowed_layers": "10,12,14",
+      "turn0_ms": 58.620415,
+      "turn5_ms": 88.628418,
+      "turn5_saving_ms": 26.106109,
+      "kv_cache_tokens": 1908252,
+      "profile_gate": true
+    },
+    "spread3": {
+      "global_layers": "5,10,12",
+      "windowed_layers": "2,8,14",
+      "turn0_ms": 59.208736,
+      "turn5_ms": 89.430847,
+      "turn5_saving_ms": 25.303681,
+      "kv_cache_tokens": 1908252,
+      "profile_gate": true
+    },
+    "early3": {
+      "global_layers": "10,12,14",
+      "windowed_layers": "2,5,8",
+      "turn0_ms": 59.321983,
+      "turn5_ms": 89.465820,
+      "turn5_saving_ms": 25.268707,
+      "kv_cache_tokens": 1908252,
+      "profile_gate": true
+    },
+    "early2": {
+      "global_layers": "8,10,12,14",
+      "windowed_layers": "2,5",
+      "turn0_ms": 59.317921,
+      "turn5_ms": 97.010689,
+      "turn5_saving_ms": 17.723839,
+      "kv_cache_tokens": 1695255,
+      "profile_gate": true
+    },
+    "first1": {
+      "global_layers": "5,8,10,12,14",
+      "windowed_layers": "2",
+      "turn0_ms": 59.609440,
+      "turn5_ms": 105.777603,
+      "turn5_saving_ms": 8.956925,
+      "kv_cache_tokens": 1335461,
+      "profile_gate": true
+    }
+  }
+}

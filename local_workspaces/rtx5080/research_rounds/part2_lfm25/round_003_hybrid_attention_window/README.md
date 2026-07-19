@@ -92,3 +92,25 @@ just add a global layer after the truncation.
 
 See `subrounds/subround_003b_sparse_global_attention/` for the exact overlay,
 compact measurements and rejection record.
+
+## Follow-Up R003c - Sparse Windowed Layer Placement
+
+R003c tested six placements that windowed only two or three of the six
+full-attention layers at 4096 while leaving the complement global. All six
+profiles passed the opening latency gate. The quality boundary was selective:
+late2, late3, spread3, early3 and first1 lost two or three control-pass cases
+in the paired retrieval probe, while early2 (windowed layers 2 and 5) lost
+zero cases in two repeats.
+
+early2 completed two 420-request replays with zero failures and scored
+58.0922 versus 56.5450 for the matched unbounded control. TTFT p50/p95
+improved from 114.26/315.56 ms to 105.45/287.42 ms, while TPOT p95 improved
+from 4.159 ms to 4.094 ms. The GPQA proxy was 21/100 versus a 21..22/100
+control range.
+
+This is a useful local research branch, not a submission candidate. The
+short quality proxy does not test information beyond 4096 tokens, and the
+branch remains below the aggregate score of the 8192 research candidate.
+R003c closes scalar placement permutations. The next bounded-attention idea
+must retain selected old positions in every affected layer rather than add
+another globally causal layer after information has already been discarded.

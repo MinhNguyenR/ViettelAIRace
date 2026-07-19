@@ -104,3 +104,19 @@ but all lost the same two control-pass retrieval cases. This falsifies the
 cheap "one global repair layer" hypothesis. Close scalar placement tuning and
 move to a retention topology that preserves selected old positions in every
 windowed full-attention layer.
+
+## Follow-Up 003c - Sparse Windowed Layer Placement
+
+Status: complete and retained as research-only evidence.
+
+The six placements tested in R003c all passed profile latency. early2
+(windowed layers 2 and 5) alone preserved every control-pass retrieval case in
+two repeats and completed two full 420-request replays with zero failures.
+Its mean score was 58.0922 versus 56.5450 for the unbounded control. The
+quality proxy remained within the noisy 21..22/100 control range.
+
+Decision: keep early2 as a balanced placement reference, but do not promote it
+to Portal. Close further global-complement permutations. Any next round must
+use a sparse retention mask or another mechanism that preserves selected old
+positions in every affected layer and must repeat the long-context retrieval
+gate.
