@@ -3662,3 +3662,27 @@ Source audit shows the dominant local kernel is FlashInfer only because SM120
 rejects FlashAttention with FP8 KV. H200 SM90 instead has packaged FA3 support
 and auto-selects it. R002y closes without an implementation or package and
 opens only target-specific FA3 qualification.
+
+## 2026-07-19 - Part 2 R003 Hybrid Full-Attention Window
+
+R003 injected a trace-independent `per_layer_sliding_window=8192` into the six
+LFM2.5 full-attention modules, preserving R002k's ten ShortConv modules,
+precision, cache mode, scheduler, CUDA Graph policy and fused greedy head.
+Startup assertions and standalone overlay tests passed.
+
+The isolated six-turn panel preserved cache progression and flattened the
+attention tail: complete GPU savings at turns 3/4/5 were approximately
+`9.0/20.1/33.3ms`. The full append-only control/candidate/control/candidate
+replay completed `420/420` every time. Scores were
+`55.9491/60.8540/57.1409/61.4875`; two-run means are therefore
+`56.5450` control and `61.1708` candidate. Candidate TTFT p50/p95 improved by
+`18.91/45.67ms`, and TPOT p95 improved by `0.498ms`.
+
+The independent 4k boundary check on 30 conversations did not reproduce the
+gain: control `68.3485`, candidate `67.9362`. This is consistent with the
+window being inactive for a 4k prompt and makes the request-history semantics
+the central unresolved variable. Candidate startup also has a larger KV pool,
+so the end-to-end gain includes capacity/admission relief in addition to
+bounded attention work. The branch is a strong local research candidate, but
+it remains outside the Portal queue pending long-context quality and rules
+review.

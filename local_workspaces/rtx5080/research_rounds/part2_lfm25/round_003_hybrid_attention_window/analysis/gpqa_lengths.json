@@ -1,0 +1,14 @@
+{
+  "schema": "r003.gpqa_lengths.v1",
+  "records": 100,
+  "output_budget": 8,
+  "input_tokens": {
+    "min": 104,
+    "p50": 237.0,
+    "p95": 478.9999999999999,
+    "max": 847,
+    "mean": 262.25
+  },
+  "window_8192_inactive_for_input_plus_output": true,
+  "window_4096_inactive_for_input_plus_output": true
+}

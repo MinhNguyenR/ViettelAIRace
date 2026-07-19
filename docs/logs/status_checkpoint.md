@@ -1354,8 +1354,23 @@ a candidate until the attribution proves an end-to-end TTFT opportunity.
 
 ## Next Recommended Task
 
-Open an H200 FA3 qualification round before writing another kernel. Prove the
-actual target backend and identify a prefill-only FA3 scheduling parameter or
-override that leaves decode unchanged. If no executable phase-isolated path
-exists, close it on source evidence and evaluate the `2.296ms` aligned-state
-tail separately. Do not force FlashInfer or TRT-LLM on H200.
+Continue with R003a's `4096/8192/16384` window-size screen on the long-context
+panel and the 100-case quality proxy. Keep the R003 overlay research-only until
+the prompt-history semantics and rules interpretation are resolved. Do not
+force FlashInfer or TRT-LLM on H200.
+
+## Part 2 R003 Completion Checkpoint - 2026-07-19
+
+- The R003 overlay injects an `8192` window only into full-attention layers
+  `[2,5,8,10,12,14]`; ten ShortConv layers and R002k hooks are verified
+  unchanged.
+- Full append-only replay is `420/420` in four runs. Candidate mean ERS is
+  `61.1708` versus control mean `56.5450`; candidate TTFT p50/p95 is
+  `95.35/269.89ms` versus `114.26/315.56ms`, and TPOT p95 is `3.661ms`
+  versus `4.159ms`.
+- Independent 4k traffic is neutral/slightly negative, which bounds the claim
+  to retained long-history semantics.
+- GPQA short proxy has no candidate-specific drop; long-context quality is
+  untested. Candidate has a larger KV pool at the same memory fraction.
+- R003 is a local research winner, not a Portal image or Compose. R002k stays
+  the submission incumbent.

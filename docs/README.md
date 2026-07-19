@@ -133,10 +133,16 @@ Read in this order:
      M8 complete GPU time regresses `1.687%`; standalone ShortConv fusion is
      closed.
 37. `local_workspaces/rtx5080/research_rounds/part2_lfm25/round_002_portal_calibrated_decode_first/subrounds/subround_002y_cached_turn_prefill_attribution/results.md`
-   - complete cached-turn first-token attribution. Prefix cache progression is
-     valid, but attention explains `92.64%` of turn-depth GPU growth. Local
-     SM120 uses FlashInfer while H200 SM90 uses FA3, so no local kernel or
-     submission is promoted.
+    - complete cached-turn first-token attribution. Prefix cache progression is
+      valid, but attention explains `92.64%` of turn-depth GPU growth. Local
+      SM120 uses FlashInfer while H200 SM90 uses FA3, so no local kernel or
+      submission is promoted.
+38. `local_workspaces/rtx5080/research_rounds/part2_lfm25/round_003_hybrid_attention_window/README.md`
+    - completed the bounded full-attention window study. An `8192` window on
+      the six attention layers raises append-only full-replay local ERS from
+      a two-run control mean `56.5450` to `61.1708`, with lower TTFT and TPOT;
+      independent 4k traffic is neutral/slightly negative, and long-context
+      semantics/rules review still block Portal promotion.
 
 Do not reuse Qwen-specific numeric sweet spots or artifacts in a Part 2
 submission without a fresh LFM2.5 measurement.
@@ -348,6 +354,12 @@ submission without a fresh LFM2.5 measurement.
   cached fraction reaches `83.16%`. Attention explains `92.64%` of the growth.
   The measured local backend is FlashInfer; H200 auto-selects packaged FA3, so
   only a target-specific qualification branch is open.
+- R003's `8192` per-layer attention window is the current local research
+  candidate. It wins the inferred append-only replay by `+4.6258` points over
+  drift-matched controls and improves the turn-5 score by `+9.373` points, but
+  has no benefit on independent 4k prompts. It changes long-context model
+  semantics and is not a submission artifact until the request semantics,
+  long-context quality and rules interpretation are closed.
 - The Qwen3.5 trace, submissions and Portal attempts described below are
   historical Phase 1 evidence only.
 - Current Portal upload queue is `portal_submissions/`; Attempt 04 failed on

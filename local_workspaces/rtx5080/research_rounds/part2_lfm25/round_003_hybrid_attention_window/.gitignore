@@ -1,0 +1,4 @@
+analysis/*
+!analysis/gpqa_lengths.json
+!analysis/profile_comparison.json
+!analysis/full_replay_comparison.json

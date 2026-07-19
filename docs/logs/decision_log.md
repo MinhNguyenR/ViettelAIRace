@@ -3309,3 +3309,30 @@ Decision:
   decode-isolation proofs required before implementation;
 - retain the aligned second-step `2.296ms` ideal ceiling as secondary research,
   not a serving claim.
+
+## 2026-07-19 - Complete Part 2 R003 Hybrid Attention Window
+
+Evidence:
+
+- an import-verified `8192` sliding window reaches exactly the six LFM2.5
+  full-attention layers and leaves all ten ShortConv layers and R002k decode
+  hooks unchanged;
+- the append-only full bracket completes `420/420` in all four runs;
+  candidate mean ERS is `61.1708` versus control mean `56.5450`, with TTFT
+  p50/p95 `95.35/269.89ms` versus `114.26/315.56ms` and TPOT p95
+  `3.661ms` versus `4.159ms`;
+- the score gain grows by turn depth and the independent 4k boundary check is
+  slightly negative (`67.9362` versus `68.3485`), so the effect is tied to
+  retained long history;
+- the short GPQA proxy has no candidate-specific drop, but it does not test
+  long-context reasoning and the candidate allocates a larger KV pool.
+
+Decision:
+
+- record R003/8192 as the current local research winner for the inferred
+  closed-loop workload;
+- keep R002k as the submission incumbent and do not publish or submit R003;
+- require a window-size sweet-spot screen, long-context quality evidence and
+  an explicit rules/driver interpretation before promotion;
+- treat the result as a composite bounded-attention plus cache-capacity gain,
+  not as a portable H200 FA3 kernel claim.
