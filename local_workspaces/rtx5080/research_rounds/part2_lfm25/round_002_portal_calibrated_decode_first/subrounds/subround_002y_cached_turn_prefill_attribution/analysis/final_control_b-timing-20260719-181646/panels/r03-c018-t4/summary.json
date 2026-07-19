@@ -1,0 +1,42 @@
+{
+  "schema": "r002y.panel_summary.v1",
+  "panel_id": "r03-c018-t4",
+  "repeat": 3,
+  "conv_id": 18,
+  "turn_idx": 4,
+  "valid": true,
+  "kineto": false,
+  "prompt_tokens": 20794,
+  "initial_computed_tokens": 16592,
+  "scheduled_prefill_tokens": 4202,
+  "cache_fraction": 0.7979224776377801,
+  "step_count": 2,
+  "step_rows": [
+    {
+      "step": 0,
+      "is_new": true,
+      "computed_before": 16592,
+      "scheduled_tokens": 4192
+    },
+    {
+      "step": 1,
+      "is_new": false,
+      "computed_before": 20784,
+      "scheduled_tokens": 10
+    }
+  ],
+  "boundary_gpu_ms": 103.87808227539062,
+  "step_gpu_ms": [
+    100.98595428466797,
+    2.8910720348358154
+  ],
+  "cpu_step_ms": [
+    5.775184,
+    3.256833
+  ],
+  "client_ttft_ms": 119.28477800029214,
+  "kernel_duration_ms": 0.0,
+  "kernel_event_count": 0,
+  "families": [],
+  "kernel_names": []
+}
