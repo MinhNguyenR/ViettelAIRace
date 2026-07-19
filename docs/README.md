@@ -526,6 +526,11 @@ submission without a fresh LFM2.5 measurement.
   opportunity survives only at `>=75%` queue removal and `<=10%` decode
   interference; it opens gap-aware scheduler design work but changes no
   champion, image, Compose or Portal artifact.
+- Part 2 R003b closes selective-global attention placement. Keeping one or two
+  full-attention layers global preserves the `4096` latency gain but loses the
+  same two paired long-context retrieval cases in every placement. No full
+  replay, image or Compose follows; see the subround results under
+  `local_workspaces/rtx5080/research_rounds/part2_lfm25/`.
 
 ## Where To Write New Notes
 

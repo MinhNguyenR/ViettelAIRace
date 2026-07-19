@@ -1,0 +1,121 @@
+{
+  "schema": "r003b.sparse_global_screen.v1",
+  "control": {
+    "path": "local_workspaces/rtx5080/research_rounds/part2_lfm25/round_003_hybrid_attention_window/analysis/control-c15-timing-20260719-194530",
+    "global_layers": "unbounded-control",
+    "turn_gpu_ms": {
+      "0": 60.78192138671875,
+      "1": 73.76345825195312,
+      "2": 83.6072998046875,
+      "3": 93.5687026977539,
+      "4": 103.03388977050781,
+      "5": 114.73452758789062
+    },
+    "kv_cache_tokens": 1649210,
+    "all_success": true
+  },
+  "candidates": {
+    "global14": {
+      "path": "local_workspaces/rtx5080/research_rounds/part2_lfm25/round_003_hybrid_attention_window/subrounds/subround_003b_sparse_global_attention/analysis/global14-timing-20260719-232222",
+      "global_layers": "14",
+      "turn_gpu_ms": {
+        "0": 61.47260665893555,
+        "1": 71.30643463134766,
+        "2": 72.9145278930664,
+        "3": 73.61270141601562,
+        "4": 75.97222137451172,
+        "5": 77.89405059814453
+      },
+      "kv_cache_tokens": 1819020,
+      "all_success": true,
+      "turn0_regression": 0.011363333972652434,
+      "turn5_saving_ms": 36.840476989746094
+    },
+    "global2": {
+      "path": "local_workspaces/rtx5080/research_rounds/part2_lfm25/round_003_hybrid_attention_window/subrounds/subround_003b_sparse_global_attention/analysis/global2-timing-20260719-232452",
+      "global_layers": "2",
+      "turn_gpu_ms": {
+        "0": 60.221248626708984,
+        "1": 68.96428680419922,
+        "2": 71.14598083496094,
+        "3": 72.75193786621094,
+        "4": 74.59286499023438,
+        "5": 80.42902374267578
+      },
+      "kv_cache_tokens": 1827977,
+      "all_success": true,
+      "turn0_regression": -0.009224334262856626,
+      "turn5_saving_ms": 34.305503845214844
+    },
+    "global8": {
+      "path": "local_workspaces/rtx5080/research_rounds/part2_lfm25/round_003_hybrid_attention_window/subrounds/subround_003b_sparse_global_attention/analysis/global8-timing-20260719-232909",
+      "global_layers": "8",
+      "turn_gpu_ms": {
+        "0": 60.45286560058594,
+        "1": 69.75529479980469,
+        "2": 70.77276611328125,
+        "3": 72.6622085571289,
+        "4": 74.36511993408203,
+        "5": 76.80207824707031
+      },
+      "kv_cache_tokens": 1819020,
+      "all_success": true,
+      "turn0_regression": -0.005413711488967743,
+      "turn5_saving_ms": 37.93244934082031
+    },
+    "global2_14": {
+      "path": "local_workspaces/rtx5080/research_rounds/part2_lfm25/round_003_hybrid_attention_window/subrounds/subround_003b_sparse_global_attention/analysis/global2_14-timing-20260719-232658",
+      "global_layers": "2,14",
+      "turn_gpu_ms": {
+        "0": 59.17488098144531,
+        "1": 69.16873931884766,
+        "2": 72.43993377685547,
+        "3": 76.0183334350586,
+        "4": 78.75926208496094,
+        "5": 82.29119873046875
+      },
+      "kv_cache_tokens": 1976697,
+      "all_success": true,
+      "turn0_regression": -0.026439447266709548,
+      "turn5_saving_ms": 32.443328857421875
+    }
+  },
+  "retrieval": {
+    "global14": {
+      "candidate_contains_key": 2,
+      "lost_control_pass": 2,
+      "gained_control_fail": 0,
+      "quality_gate": {
+        "loses_at_most_one_control_pass": false,
+        "all_requests_successful": true
+      }
+    },
+    "global2": {
+      "candidate_contains_key": 2,
+      "lost_control_pass": 2,
+      "gained_control_fail": 0,
+      "quality_gate": {
+        "loses_at_most_one_control_pass": false,
+        "all_requests_successful": true
+      }
+    },
+    "global8": {
+      "candidate_contains_key": 2,
+      "lost_control_pass": 2,
+      "gained_control_fail": 0,
+      "quality_gate": {
+        "loses_at_most_one_control_pass": false,
+        "all_requests_successful": true
+      }
+    },
+    "global2_14": {
+      "candidate_contains_key": 2,
+      "lost_control_pass": 2,
+      "gained_control_fail": 0,
+      "quality_gate": {
+        "loses_at_most_one_control_pass": false,
+        "all_requests_successful": true
+      }
+    }
+  }
+}

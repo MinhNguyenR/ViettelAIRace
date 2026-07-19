@@ -2916,3 +2916,30 @@ and one lost retrieval case do not justify carrying `6144` over `8192` or
 Window `4096` is performance-positive in two full runs but loses two paired
 retrieval cases. Do not infer quality safety from unchanged short GPQA, and do
 not publish/package this branch before explicit rules and long-context review.
+
+### 2026-07-19 - R003b Selective Global Attention Placement
+
+Action: keep layer `14`, `2`, `8`, or the pair `2,14` globally causal while
+windowing every other full-attention layer at `4096`.
+
+Expected: recover the two retrieval cases lost by the all-layer `4096`
+candidate without giving up its long-context latency gain.
+
+Observed: all four profiles passed the performance gate and saved
+`32.443..37.932ms` at turn 5, but every retrieval candidate answered only
+`2/14` key cases versus `4/14` for the unbounded control. The same 5084- and
+7109-token cases were lost in every placement; no case was gained.
+
+Root cause / best hypothesis: a global layer after a bounded layer cannot
+reconstruct information already discarded by the earlier stack. The quality
+loss is distributed across the windowed layers, not localized to one layer.
+
+Decision: reject all placements and skip full replay, image creation and
+Compose work. Future work must preserve selected old information in each
+affected layer.
+
+Related files:
+
+```text
+local_workspaces/rtx5080/research_rounds/part2_lfm25/round_003_hybrid_attention_window/subrounds/subround_003b_sparse_global_attention/
+```

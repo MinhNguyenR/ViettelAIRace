@@ -1,0 +1,8 @@
+analysis/*
+!analysis/.gitkeep
+!analysis/profile_screen.json
+!analysis/retrieval_screen.json
+!analysis/full_replay_comparison.json
+overlay/__pycache__/
+tests/__pycache__/
+*.pyc

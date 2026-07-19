@@ -3361,3 +3361,22 @@ Decision:
 - keep R002k as the Portal incumbent and create no image/Compose until BTC
   long-context construction, rules acceptability and H200 behavior are
   resolved.
+
+## 2026-07-19 - Close R003b Selective Global Placement
+
+Evidence:
+
+- `global14`, `global2`, `global8` and `global2_14` all pass the isolated
+  performance gate, with turn-5 savings from `32.443` to `37.932ms`;
+- every candidate completes all 14 retrieval requests but loses the same two
+  control-pass cases at actual prompt lengths `5084` and `7109` tokens;
+- no placement gains a retrieval case, so the global-layer repair hypothesis
+  has no quality support.
+
+Decision:
+
+- close R003b before full replay;
+- keep R002k as the submission incumbent;
+- do not package a selective-global overlay;
+- require a retention pattern that preserves selected old information in each
+  affected layer before reopening bounded-attention score work.

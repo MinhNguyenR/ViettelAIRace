@@ -2092,3 +2092,30 @@ Carry-forward: preserve `4096` only as a performance upper bound and `8192`
 as a semantics-aware research control. Close scalar window tuning. Keep R002k
 as the submission incumbent and do not package a window until driver, rules
 and target-H200 qualification pass.
+
+## Part 2 R003b Selective Global Attention Placement
+
+Technique: keep one or two of the six LFM2.5 full-attention layers globally
+causal while applying a `4096` window to the other full-attention layers.
+ShortConv state, precision, cache coordinator and decode policy remain fixed.
+
+Evidence:
+
+```text
+placement    turn-5 saving    retrieval losses    profile gate
+global14       36.840ms             2/14              pass
+global2        34.306ms             2/14              pass
+global8        37.932ms             2/14              pass
+global2_14     32.443ms             2/14              pass
+```
+
+All four candidates completed the retrieval process, but each lost the same
+two control-pass cases at actual prompt lengths `5084` and `7109` tokens. No
+placement recovered a case. A later global layer cannot reconstruct
+information already discarded by earlier windowed layers.
+
+Decision: reject as a serving technique and do not open full replay. Keep the
+result as negative evidence against sparse global-layer repair. A future
+bounded-attention branch must preserve selected old positions in every affected
+layer, such as a validated sink/prefix retention pattern, and must pass the
+same paired long-context probe before score work.

@@ -75,3 +75,20 @@ or semantic block. R002k remains the submission incumbent.
 - `subrounds/subround_003a_window_sweetspot/`: complete score/quality frontier
   for windows `4096..16384`.
 - `failed_actions.md`: invalid probes and unresolved boundaries.
+
+## Follow-Up R003b - Selective Global Placement
+
+R003b tested whether leaving one or two of the six full-attention layers
+unbounded could repair the two retrieval losses seen at window `4096`. The
+four placements (`global14`, `global2`, `global8`, `global2_14`) all passed the
+isolated performance gate, saving `32.443..37.932ms` at turn 5 with zero
+request failures. All four still lost the same two control-pass retrieval
+cases at actual prompt lengths `5084` and `7109` tokens.
+
+This closes the placement hypothesis without a full replay. A global layer
+cannot reconstruct information discarded by earlier windowed layers. The next
+candidate must preserve selected old information in each affected layer, not
+just add a global layer after the truncation.
+
+See `subrounds/subround_003b_sparse_global_attention/` for the exact overlay,
+compact measurements and rejection record.

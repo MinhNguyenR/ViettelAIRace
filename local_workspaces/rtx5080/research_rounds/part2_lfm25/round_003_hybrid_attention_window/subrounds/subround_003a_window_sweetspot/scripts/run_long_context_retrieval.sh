@@ -21,12 +21,17 @@ PARENT_DIR="$(cd "$SUBROUND_DIR/../.." && pwd)"
 ROOT_DIR="$(git -C "$SUBROUND_DIR" rev-parse --show-toplevel)"
 MODEL_DIR="$ROOT_DIR/local_workspaces/rtx5080/models/lfm25_1.2b_instruct"
 IMAGE="localhost/part2-lfm25-r002k:fused-bf16-greedy"
+OVERLAY_DIR="${R003_OVERLAY_DIR:-$PARENT_DIR/overlay}"
+ANALYSIS_DIR="${R003_ANALYSIS_DIR:-$SUBROUND_DIR/analysis}"
+CLIENT_SCRIPT="${R003_RETRIEVAL_CLIENT:-$SUBROUND_DIR/scripts/run_long_context_retrieval.py}"
+GLOBAL_LAYERS="${R003B_GLOBAL_LAYERS:-}"
 STAMP="$(date +%Y%m%d-%H%M%S)"
-RUN_DIR="$SUBROUND_DIR/analysis/retrieval-${LABEL}-${WINDOW}-${STAMP}"
+RUN_DIR="$ANALYSIS_DIR/retrieval-${LABEL}-${WINDOW}-${STAMP}"
 CONTAINER_NAME="part2-lfm25-r003a-retrieval-$PORT"
 mkdir -p "$RUN_DIR"
 printf '%s\n' "$IMAGE" >"$RUN_DIR/image_ref.txt"
 printf '%s\n' "$WINDOW" >"$RUN_DIR/window.txt"
+printf '%s\n' "$GLOBAL_LAYERS" >"$RUN_DIR/global_layers.txt"
 
 cleanup() {
   docker logs "$CONTAINER_NAME" >"$RUN_DIR/server.log" 2>&1 || true
@@ -54,7 +59,8 @@ docker run --detach \
   --env PYTHONPATH=/r003-overlay:/opt/r002k \
   --env VLLM_R003_WINDOW="$WINDOW_ENABLED" \
   --env R003_ATTENTION_WINDOW="$WINDOW_SIZE" \
-  --volume "$PARENT_DIR/overlay:/r003-overlay:ro" \
+  --env R003B_GLOBAL_LAYERS="$GLOBAL_LAYERS" \
+  --volume "$OVERLAY_DIR:/r003-overlay:ro" \
   --volume "$MODEL_DIR:/model:ro" \
   --entrypoint python3 \
   "$IMAGE" \
@@ -115,7 +121,7 @@ docker run --rm \
   --network host \
   --env TOKENIZERS_PARALLELISM=false \
   --volume "$MODEL_DIR:/model:ro" \
-  --volume "$SUBROUND_DIR/scripts/run_long_context_retrieval.py:/client.py:ro" \
+  --volume "$CLIENT_SCRIPT:/client.py:ro" \
   --volume "$RUN_DIR:/out" \
   --entrypoint python3 \
   "$IMAGE" \

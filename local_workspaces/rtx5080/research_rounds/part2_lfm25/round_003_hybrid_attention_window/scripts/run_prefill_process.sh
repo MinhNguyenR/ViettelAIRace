@@ -23,12 +23,16 @@ TRACE_DIR="$ROOT_DIR/input_part2"
 IMAGE="localhost/part2-lfm25-r002k:fused-bf16-greedy"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 R002Y_DIR="$ROOT_DIR/local_workspaces/rtx5080/research_rounds/part2_lfm25/round_002_portal_calibrated_decode_first/subrounds/subround_002y_cached_turn_prefill_attribution"
+OVERLAY_DIR="${R003_OVERLAY_DIR:-$SUBROUND_DIR/overlay}"
+ANALYSIS_DIR="${R003_ANALYSIS_DIR:-$SUBROUND_DIR/analysis}"
 WINDOW_ENABLED="${WINDOW_ENABLED:-0}"
 WINDOW_SIZE="${WINDOW_SIZE:-8192}"
-RUN_DIR="$SUBROUND_DIR/analysis/$LABEL-$MODE-$STAMP"
+GLOBAL_LAYERS="${R003B_GLOBAL_LAYERS:-}"
+RUN_DIR="$ANALYSIS_DIR/$LABEL-$MODE-$STAMP"
 CONTAINER_NAME="part2-lfm25-r003-$LABEL-$PORT"
 mkdir -p "$RUN_DIR"
 printf '%s\n' "$IMAGE" >"$RUN_DIR/image_ref.txt"
+printf '%s\n' "$GLOBAL_LAYERS" >"$RUN_DIR/global_layers.txt"
 
 cleanup() {
   docker logs "$CONTAINER_NAME" >"$RUN_DIR/server.log" 2>&1 || true
@@ -56,10 +60,11 @@ docker run --detach \
   --env PYTHONPATH=/r003-overlay:/r002y-overlay:/opt/r002k \
   --env VLLM_R003_WINDOW="$WINDOW_ENABLED" \
   --env R003_ATTENTION_WINDOW="$WINDOW_SIZE" \
+  --env R003B_GLOBAL_LAYERS="$GLOBAL_LAYERS" \
   --env R002Y_PROFILE_ARM=/r002y-out/arm.json \
   --env R002Y_PROFILE_FINALIZE=/r002y-out/finalize \
   --env R002Y_PROFILE_OUTPUT_ROOT=/r002y-out \
-  --volume "$SUBROUND_DIR/overlay:/r003-overlay:ro" \
+  --volume "$OVERLAY_DIR:/r003-overlay:ro" \
   --volume "$R002Y_DIR/overlay:/r002y-overlay:ro" \
   --volume "$RUN_DIR:/r002y-out" \
   --volume "$MODEL_DIR:/model:ro" \

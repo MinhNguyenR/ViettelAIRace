@@ -3708,3 +3708,19 @@ mean unbounded. The `4096` mean is `+8.0054` points, with TTFT p50/p95
 `84.49/234.29ms` and TPOT p50/p95 `2.318/3.342ms`. The branch is the stable
 local score maximum but fails the paired retrieval gate; `8192` remains the
 balanced research branch. No submission artifact follows.
+
+## 2026-07-19 - Part 2 R003b Selective Global Placement
+
+The exact image was run with one or two full-attention layers left unbounded
+and a `4096` window on the other full-attention layers. Profile turn-5 GPU
+savings were `36.840/34.306/37.932/32.443ms` for global layers
+`14/2/8/2,14`, respectively. All six-turn profiles and all 14 retrieval
+requests completed.
+
+The paired retrieval result was negative for every placement: candidates
+answered `2/14` key cases versus `4/14` for the unbounded control, losing the
+same `5084`- and `7109`-token cases. No full replay or package was opened.
+
+Conclusion: a later global layer cannot reconstruct information discarded by
+earlier windowed layers. A future candidate must preserve selected old
+positions in every affected layer. R003b is a completed research rejection.

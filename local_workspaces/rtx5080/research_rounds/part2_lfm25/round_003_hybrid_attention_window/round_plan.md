@@ -94,3 +94,13 @@ retrieval cases; `8192` is the balanced branch with no paired losses;
 `16384` fails the performance gate. Do not open a Portal image until one
 window passes a stronger long-context quality decision and a target-backend/
 rules review.
+
+## Follow-Up 003b - Selective Global Placement
+
+Status: complete and rejected before full replay.
+
+The four one/two-global-layer placements all passed the isolated latency gate,
+but all lost the same two control-pass retrieval cases. This falsifies the
+cheap "one global repair layer" hypothesis. Close scalar placement tuning and
+move to a retention topology that preserves selected old positions in every
+windowed full-attention layer.

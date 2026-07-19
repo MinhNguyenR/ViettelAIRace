@@ -33,6 +33,10 @@ Read this file first for local RTX 5080 lab notes.
   score-max branch at `64.5504` but fails paired long-context retrieval;
   `8192` is the balanced branch. Neither changes the R002k submission
   incumbent.
+- `../research_rounds/part2_lfm25/round_003_hybrid_attention_window/subrounds/subround_003b_sparse_global_attention/README.md`
+  - completed selective-global placement screen. `global14`, `global2`,
+  `global8` and `global2_14` retain the latency gain but all lose the same
+  two retrieval cases; no full replay or package was opened.
 - `../research_rounds/score_100_program/scoreboard.md` - compact R000-R039
   integration results; I006 seq16/default2048 remains the Portal champion and
   rollback at `51.59`.

@@ -12,12 +12,15 @@ ROOT_DIR="$(git -C "$ROUND_DIR" rev-parse --show-toplevel)"
 MODEL_DIR="$ROOT_DIR/local_workspaces/rtx5080/models/lfm25_1.2b_instruct"
 TRACE_DIR="$ROOT_DIR/input_part2"
 R002A_DIR="$ROOT_DIR/local_workspaces/rtx5080/research_rounds/part2_lfm25/round_002_portal_calibrated_decode_first"
+OVERLAY_DIR="${R003_OVERLAY_DIR:-$ROUND_DIR/overlay}"
+ANALYSIS_DIR="${R003_ANALYSIS_DIR:-$ROUND_DIR/analysis}"
 MODE="$1"
 LABEL="$2"
 PORT="${3:-8000}"
 GPU_UTILIZATION="${R003_GPU_UTILIZATION:-0.80}"
 ALLOC_CONF="${R003_ALLOC_CONF:-expandable_segments:True}"
 WINDOW_SIZE="${R003_ATTENTION_WINDOW:-8192}"
+GLOBAL_LAYERS="${R003B_GLOBAL_LAYERS:-}"
 PROMPT_MODE="${R003_PROMPT_MODE:-append_only_static_assistant}"
 CONVERSATION_LIMIT="${R003_CONVERSATION_LIMIT:-}"
 case "$MODE" in
@@ -34,13 +37,14 @@ esac
 
 STAMP="$(date +%Y%m%d-%H%M%S)"
 UTIL_TAG="${GPU_UTILIZATION//./p}"
-RUN_DIR="$ROUND_DIR/analysis/full-replay-${LABEL}-${MODE}-u${UTIL_TAG}-${STAMP}"
+RUN_DIR="$ANALYSIS_DIR/full-replay-${LABEL}-${MODE}-u${UTIL_TAG}-${STAMP}"
 CONTAINER_NAME="part2-lfm25-r003-full-$PORT"
 mkdir -p "$RUN_DIR"
 printf '%s\n' "$IMAGE" >"$RUN_DIR/image_ref.txt"
 printf '%s\n' "$MODE" >"$RUN_DIR/mode.txt"
 printf '%s\n' "$WINDOW_ENABLED" >"$RUN_DIR/window_enabled.txt"
 printf '%s\n' "$WINDOW_SIZE" >"$RUN_DIR/window_size.txt"
+printf '%s\n' "$GLOBAL_LAYERS" >"$RUN_DIR/global_layers.txt"
 printf '%s\n' "$PROMPT_MODE" >"$RUN_DIR/prompt_mode.txt"
 printf '%s\n' "$CONVERSATION_LIMIT" >"$RUN_DIR/conversation_limit.txt"
 
@@ -70,7 +74,8 @@ docker run --detach \
   --env PYTHONPATH=/r003-overlay:/opt/r002k \
   --env VLLM_R003_WINDOW="$WINDOW_ENABLED" \
   --env R003_ATTENTION_WINDOW="$WINDOW_SIZE" \
-  --volume "$ROUND_DIR/overlay:/r003-overlay:ro" \
+  --env R003B_GLOBAL_LAYERS="$GLOBAL_LAYERS" \
+  --volume "$OVERLAY_DIR:/r003-overlay:ro" \
   --volume "$MODEL_DIR:/model:ro" \
   --entrypoint python3 \
   "$IMAGE" \

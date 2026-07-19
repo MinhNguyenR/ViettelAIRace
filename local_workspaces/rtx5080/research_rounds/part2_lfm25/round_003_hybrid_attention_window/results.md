@@ -195,3 +195,22 @@ clarification and target-H200 qualification.
 - `scripts/analyze_full_replay.py`: score-component and per-turn aggregation.
 - `subrounds/subround_003a_window_sweetspot/analysis/full_replay_frontier.json`:
   compact full-replay score frontier.
+
+## Follow-Up R003b Result
+
+R003b kept one or two full-attention layers globally causal while applying the
+`4096` window to the remaining full-attention layers. The profile results were
+strong but the paired quality gate failed uniformly:
+
+| placement | turn-0/turn-5 ms | turn-5 saving | retrieval losses |
+|---|---:|---:|---:|
+| `global14` | `61.473 / 77.894` | `36.840ms` | `2/14` |
+| `global2` | `60.221 / 80.429` | `34.306ms` | `2/14` |
+| `global8` | `60.453 / 76.802` | `37.932ms` | `2/14` |
+| `global2_14` | `59.175 / 82.291` | `32.443ms` | `2/14` |
+
+Every request completed. Each candidate lost the same control-pass cases at
+5084 and 7109 actual prompt tokens, so placement does not solve the semantic
+loss. No full replay, image or Compose follows. R002k remains the submission
+incumbent; R003a `4096` remains a score upper bound only and R003 `8192` the
+balanced research branch.

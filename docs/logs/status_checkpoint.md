@@ -1397,3 +1397,21 @@ history. If the branch remains eligible, design a semantics-preserving
 alternative that reduces old-token attention work without hard truncation,
 using `8192` as the balanced control and `4096` only as the measured upper
 bound on attainable local score.
+
+## Part 2 R003b Completion Checkpoint - 2026-07-19
+
+- Source and overlay checks passed for exact selective routing of full-
+  attention layers `[2,5,8,10,12,14]`; ShortConv layers remained untouched.
+- Four placements (`global14`, `global2`, `global8`, `global2_14`) all passed
+  the isolated performance gate and saved `32.443..37.932ms` at turn 5.
+- Every retrieval process completed `14/14`, but each candidate lost the same
+  two control-pass cases at actual prompt lengths `5084` and `7109` tokens.
+- No full replay, image, Compose or Portal candidate was created. The global
+  layer repair hypothesis is closed; R002k remains the incumbent.
+
+## Next Recommended Task
+
+If bounded attention remains eligible after rules/semantics review, test a
+retention pattern that preserves a small, deterministic old-token/sink set in
+every affected layer. Do not reopen scalar window sizes or global-layer
+placement without a new quality hypothesis and the paired retrieval gate.
