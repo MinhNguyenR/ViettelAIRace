@@ -1,0 +1,316 @@
+{
+  "schema": "r003a.long_context_retrieval_comparison.v1",
+  "control_path": "local_workspaces/rtx5080/research_rounds/part2_lfm25/round_003_hybrid_attention_window/subrounds/subround_003c_sparse_window_layers/analysis/retrieval-control_repeat-control-20260720-001520/results.json",
+  "control_contains_key": 5,
+  "total_cases": 14,
+  "candidates": {
+    "safe8192": {
+      "path": "local_workspaces/rtx5080/research_rounds/part2_lfm25/round_003_hybrid_attention_window/subrounds/subround_003d_tiered_attention_horizons/analysis/retrieval-safe8192-4096-20260720-010224/results.json",
+      "control_contains_key": 5,
+      "candidate_contains_key": 6,
+      "control_pass_candidate_fail": 0,
+      "control_fail_candidate_pass": 1,
+      "output_hash_matches": 7,
+      "total_cases": 14,
+      "lost_cases": [],
+      "gained_cases": [
+        {
+          "target_tokens": 7168,
+          "actual_prompt_tokens": 7109,
+          "replicate": 0,
+          "key": "K3F6AA77679",
+          "control_output": "",
+          "candidate_output": " K3F6AA77679"
+        }
+      ],
+      "by_target": {
+        "3072": {
+          "cases": 2,
+          "control_pass": 2,
+          "candidate_pass": 2,
+          "lost": 0,
+          "gained": 0
+        },
+        "5120": {
+          "cases": 2,
+          "control_pass": 2,
+          "candidate_pass": 2,
+          "lost": 0,
+          "gained": 0
+        },
+        "7168": {
+          "cases": 2,
+          "control_pass": 1,
+          "candidate_pass": 2,
+          "lost": 0,
+          "gained": 1
+        },
+        "9216": {
+          "cases": 2,
+          "control_pass": 0,
+          "candidate_pass": 0,
+          "lost": 0,
+          "gained": 0
+        },
+        "12288": {
+          "cases": 2,
+          "control_pass": 0,
+          "candidate_pass": 0,
+          "lost": 0,
+          "gained": 0
+        },
+        "17408": {
+          "cases": 2,
+          "control_pass": 0,
+          "candidate_pass": 0,
+          "lost": 0,
+          "gained": 0
+        },
+        "22528": {
+          "cases": 2,
+          "control_pass": 0,
+          "candidate_pass": 0,
+          "lost": 0,
+          "gained": 0
+        }
+      },
+      "quality_risk_gate": {
+        "loses_at_most_one_control_pass": true,
+        "all_requests_successful": true
+      }
+    },
+    "safe8192_repeat": {
+      "path": "local_workspaces/rtx5080/research_rounds/part2_lfm25/round_003_hybrid_attention_window/subrounds/subround_003d_tiered_attention_horizons/analysis/retrieval-safe8192_repeat-4096-20260720-010530/results.json",
+      "control_contains_key": 5,
+      "candidate_contains_key": 6,
+      "control_pass_candidate_fail": 0,
+      "control_fail_candidate_pass": 1,
+      "output_hash_matches": 8,
+      "total_cases": 14,
+      "lost_cases": [],
+      "gained_cases": [
+        {
+          "target_tokens": 7168,
+          "actual_prompt_tokens": 7109,
+          "replicate": 0,
+          "key": "K3F6AA77679",
+          "control_output": "",
+          "candidate_output": " K3F6AA77679"
+        }
+      ],
+      "by_target": {
+        "3072": {
+          "cases": 2,
+          "control_pass": 2,
+          "candidate_pass": 2,
+          "lost": 0,
+          "gained": 0
+        },
+        "5120": {
+          "cases": 2,
+          "control_pass": 2,
+          "candidate_pass": 2,
+          "lost": 0,
+          "gained": 0
+        },
+        "7168": {
+          "cases": 2,
+          "control_pass": 1,
+          "candidate_pass": 2,
+          "lost": 0,
+          "gained": 1
+        },
+        "9216": {
+          "cases": 2,
+          "control_pass": 0,
+          "candidate_pass": 0,
+          "lost": 0,
+          "gained": 0
+        },
+        "12288": {
+          "cases": 2,
+          "control_pass": 0,
+          "candidate_pass": 0,
+          "lost": 0,
+          "gained": 0
+        },
+        "17408": {
+          "cases": 2,
+          "control_pass": 0,
+          "candidate_pass": 0,
+          "lost": 0,
+          "gained": 0
+        },
+        "22528": {
+          "cases": 2,
+          "control_pass": 0,
+          "candidate_pass": 0,
+          "lost": 0,
+          "gained": 0
+        }
+      },
+      "quality_risk_gate": {
+        "loses_at_most_one_control_pass": true,
+        "all_requests_successful": true
+      }
+    },
+    "mid6144": {
+      "path": "local_workspaces/rtx5080/research_rounds/part2_lfm25/round_003_hybrid_attention_window/subrounds/subround_003d_tiered_attention_horizons/analysis/retrieval-mid6144-4096-20260720-010324/results.json",
+      "control_contains_key": 5,
+      "candidate_contains_key": 4,
+      "control_pass_candidate_fail": 1,
+      "control_fail_candidate_pass": 0,
+      "output_hash_matches": 10,
+      "total_cases": 14,
+      "lost_cases": [
+        {
+          "target_tokens": 7168,
+          "actual_prompt_tokens": 7109,
+          "replicate": 1,
+          "key": "KCD0433D6CD",
+          "control_output": "\n\nThe answer is KCD0433D6CD",
+          "candidate_output": " Passkey: The passkey is The passkey."
+        }
+      ],
+      "gained_cases": [],
+      "by_target": {
+        "3072": {
+          "cases": 2,
+          "control_pass": 2,
+          "candidate_pass": 2,
+          "lost": 0,
+          "gained": 0
+        },
+        "5120": {
+          "cases": 2,
+          "control_pass": 2,
+          "candidate_pass": 2,
+          "lost": 0,
+          "gained": 0
+        },
+        "7168": {
+          "cases": 2,
+          "control_pass": 1,
+          "candidate_pass": 0,
+          "lost": 1,
+          "gained": 0
+        },
+        "9216": {
+          "cases": 2,
+          "control_pass": 0,
+          "candidate_pass": 0,
+          "lost": 0,
+          "gained": 0
+        },
+        "12288": {
+          "cases": 2,
+          "control_pass": 0,
+          "candidate_pass": 0,
+          "lost": 0,
+          "gained": 0
+        },
+        "17408": {
+          "cases": 2,
+          "control_pass": 0,
+          "candidate_pass": 0,
+          "lost": 0,
+          "gained": 0
+        },
+        "22528": {
+          "cases": 2,
+          "control_pass": 0,
+          "candidate_pass": 0,
+          "lost": 0,
+          "gained": 0
+        }
+      },
+      "quality_risk_gate": {
+        "loses_at_most_one_control_pass": true,
+        "all_requests_successful": true
+      }
+    },
+    "front3": {
+      "path": "local_workspaces/rtx5080/research_rounds/part2_lfm25/round_003_hybrid_attention_window/subrounds/subround_003d_tiered_attention_horizons/analysis/retrieval-front3-4096-20260720-010427/results.json",
+      "control_contains_key": 5,
+      "candidate_contains_key": 3,
+      "control_pass_candidate_fail": 2,
+      "control_fail_candidate_pass": 0,
+      "output_hash_matches": 9,
+      "total_cases": 14,
+      "lost_cases": [
+        {
+          "target_tokens": 5120,
+          "actual_prompt_tokens": 5084,
+          "replicate": 1,
+          "key": "K894F50F9E6",
+          "control_output": "\n\nThe secret passkey is K894F50F9E6.",
+          "candidate_output": "\n\nK894F9F9F9F9F9F9F9F9F9F9F"
+        },
+        {
+          "target_tokens": 7168,
+          "actual_prompt_tokens": 7109,
+          "replicate": 1,
+          "key": "KCD0433D6CD",
+          "control_output": "\n\nThe answer is KCD0433D6CD",
+          "candidate_output": " K"
+        }
+      ],
+      "gained_cases": [],
+      "by_target": {
+        "3072": {
+          "cases": 2,
+          "control_pass": 2,
+          "candidate_pass": 2,
+          "lost": 0,
+          "gained": 0
+        },
+        "5120": {
+          "cases": 2,
+          "control_pass": 2,
+          "candidate_pass": 1,
+          "lost": 1,
+          "gained": 0
+        },
+        "7168": {
+          "cases": 2,
+          "control_pass": 1,
+          "candidate_pass": 0,
+          "lost": 1,
+          "gained": 0
+        },
+        "9216": {
+          "cases": 2,
+          "control_pass": 0,
+          "candidate_pass": 0,
+          "lost": 0,
+          "gained": 0
+        },
+        "12288": {
+          "cases": 2,
+          "control_pass": 0,
+          "candidate_pass": 0,
+          "lost": 0,
+          "gained": 0
+        },
+        "17408": {
+          "cases": 2,
+          "control_pass": 0,
+          "candidate_pass": 0,
+          "lost": 0,
+          "gained": 0
+        },
+        "22528": {
+          "cases": 2,
+          "control_pass": 0,
+          "candidate_pass": 0,
+          "lost": 0,
+          "gained": 0
+        }
+      },
+      "quality_risk_gate": {
+        "loses_at_most_one_control_pass": false,
+        "all_requests_successful": true
+      }
+    }
+  }
+}

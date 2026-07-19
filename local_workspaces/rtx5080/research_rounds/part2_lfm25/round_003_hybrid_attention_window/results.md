@@ -230,3 +230,23 @@ observations of 21/100 and 22/100; this is neutral process noise because the
 proxy prompts are shorter than the window. Keep early2 research-only and close
 layer-placement permutations. The canonical details are in
 subrounds/subround_003c_sparse_window_layers/.
+
+## Follow-Up R003d Result
+
+R003d tested tiered horizons with 4096 on layers 2 and 5 and a longer horizon
+on the remaining full-attention layers. `safe8192` was the only candidate that
+passed the paired retrieval gate: it completed 14/14 requests, lost zero
+control-pass cases in two repeats and gained one 7,109-token case. `mid6144`
+lost one control-pass case and `front3` lost two.
+
+The two safe8192 replays scored `61.8737` and `61.9014`, mean `61.8876`,
+versus control mean `56.5450`. Mean TTFT p50/p95 was `90.966/245.763ms` versus
+`114.262/315.560ms`; mean TPOT p95 was `3.612ms` versus `4.159ms`. All four
+runs had zero graded failures. The candidate score range was `0.0277` points,
+much narrower than the control range `1.1918`.
+
+The quality run returned `23/100` with 11 parse failures. Controls observed
+`21/100` and `22/100` with 11 and 10 parse failures. Because the proxy prompts
+are below 8192 tokens, this is only a short-prompt regression screen. The
+effect is also partly a KV-capacity effect, not an isolated attention-kernel
+measurement. Keep the branch research-only and do not package it for BTC.

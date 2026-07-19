@@ -120,3 +120,18 @@ to Portal. Close further global-complement permutations. Any next round must
 use a sparse retention mask or another mechanism that preserves selected old
 positions in every affected layer and must repeat the long-context retrieval
 gate.
+
+## Follow-Up 003d - Tiered Attention Horizons
+
+Status: complete and retained as research-only evidence.
+
+The tiered map screen confirmed `safe8192` as the only gate-passing candidate.
+It improved the two-run local score mean by `+5.3426` points over the repeated
+unbounded control, with lower TTFT and TPOT tails and zero graded failures.
+`mid6144` and `front3` were rejected for paired retrieval regressions.
+
+The result does not authorize packaging: the attention horizon is a semantic
+change, the short quality proxy cannot test long history, and the larger KV
+pool contributes to the measured gain. Close scalar horizon tuning. The next
+branch must investigate request-local prefix-plus-recent retention or a
+target-qualified attention path with an explicit long-context quality gate.

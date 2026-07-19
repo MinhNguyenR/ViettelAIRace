@@ -1,0 +1,31 @@
+{
+  "schema": "r003d.profile_screen.v1",
+  "control": {
+    "turn0_ms": 60.781921,
+    "turn5_ms": 114.734528
+  },
+  "candidates": {
+    "safe8192": {
+      "map": "2:4096,5:4096,8:8192,10:8192,12:8192,14:8192",
+      "turn0_ms": 59.406849,
+      "turn5_ms": 73.927872,
+      "turn5_saving_ms": 40.806656,
+      "gate": "pass"
+    },
+    "mid6144": {
+      "map": "2:4096,5:4096,8:6144,10:6144,12:6144,14:6144",
+      "turn0_ms": 58.820927,
+      "turn5_ms": 71.624893,
+      "turn5_saving_ms": 43.109635,
+      "gate": "pass_profile_rejected_retrieval"
+    },
+    "front3": {
+      "map": "2:4096,5:4096,8:4096,10:8192,12:8192,14:8192",
+      "turn0_ms": 59.552319,
+      "turn5_ms": 72.716125,
+      "turn5_saving_ms": 42.018403,
+      "gate": "pass_profile_rejected_retrieval"
+    }
+  },
+  "decision": "safe8192_only_candidate_advances_to_full_replay"
+}

@@ -28,11 +28,13 @@ ANALYSIS_DIR="${R003_ANALYSIS_DIR:-$SUBROUND_DIR/analysis}"
 WINDOW_ENABLED="${WINDOW_ENABLED:-0}"
 WINDOW_SIZE="${WINDOW_SIZE:-8192}"
 GLOBAL_LAYERS="${R003B_GLOBAL_LAYERS:-}"
+WINDOW_MAP="${R003D_WINDOW_MAP:-}"
 RUN_DIR="$ANALYSIS_DIR/$LABEL-$MODE-$STAMP"
 CONTAINER_NAME="part2-lfm25-r003-$LABEL-$PORT"
 mkdir -p "$RUN_DIR"
 printf '%s\n' "$IMAGE" >"$RUN_DIR/image_ref.txt"
 printf '%s\n' "$GLOBAL_LAYERS" >"$RUN_DIR/global_layers.txt"
+printf '%s\n' "$WINDOW_MAP" >"$RUN_DIR/window_map.txt"
 
 cleanup() {
   docker logs "$CONTAINER_NAME" >"$RUN_DIR/server.log" 2>&1 || true
@@ -61,6 +63,7 @@ docker run --detach \
   --env VLLM_R003_WINDOW="$WINDOW_ENABLED" \
   --env R003_ATTENTION_WINDOW="$WINDOW_SIZE" \
   --env R003B_GLOBAL_LAYERS="$GLOBAL_LAYERS" \
+  --env R003D_WINDOW_MAP="$WINDOW_MAP" \
   --env R002Y_PROFILE_ARM=/r002y-out/arm.json \
   --env R002Y_PROFILE_FINALIZE=/r002y-out/finalize \
   --env R002Y_PROFILE_OUTPUT_ROOT=/r002y-out \

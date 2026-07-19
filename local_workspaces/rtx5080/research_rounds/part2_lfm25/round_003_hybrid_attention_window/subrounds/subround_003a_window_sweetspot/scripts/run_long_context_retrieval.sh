@@ -25,6 +25,7 @@ OVERLAY_DIR="${R003_OVERLAY_DIR:-$PARENT_DIR/overlay}"
 ANALYSIS_DIR="${R003_ANALYSIS_DIR:-$SUBROUND_DIR/analysis}"
 CLIENT_SCRIPT="${R003_RETRIEVAL_CLIENT:-$SUBROUND_DIR/scripts/run_long_context_retrieval.py}"
 GLOBAL_LAYERS="${R003B_GLOBAL_LAYERS:-}"
+WINDOW_MAP="${R003D_WINDOW_MAP:-}"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 RUN_DIR="$ANALYSIS_DIR/retrieval-${LABEL}-${WINDOW}-${STAMP}"
 CONTAINER_NAME="part2-lfm25-r003a-retrieval-$PORT"
@@ -32,6 +33,7 @@ mkdir -p "$RUN_DIR"
 printf '%s\n' "$IMAGE" >"$RUN_DIR/image_ref.txt"
 printf '%s\n' "$WINDOW" >"$RUN_DIR/window.txt"
 printf '%s\n' "$GLOBAL_LAYERS" >"$RUN_DIR/global_layers.txt"
+printf '%s\n' "$WINDOW_MAP" >"$RUN_DIR/window_map.txt"
 
 cleanup() {
   docker logs "$CONTAINER_NAME" >"$RUN_DIR/server.log" 2>&1 || true
@@ -60,6 +62,7 @@ docker run --detach \
   --env VLLM_R003_WINDOW="$WINDOW_ENABLED" \
   --env R003_ATTENTION_WINDOW="$WINDOW_SIZE" \
   --env R003B_GLOBAL_LAYERS="$GLOBAL_LAYERS" \
+  --env R003D_WINDOW_MAP="$WINDOW_MAP" \
   --volume "$OVERLAY_DIR:/r003-overlay:ro" \
   --volume "$MODEL_DIR:/model:ro" \
   --entrypoint python3 \

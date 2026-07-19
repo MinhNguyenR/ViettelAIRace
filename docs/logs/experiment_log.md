@@ -3724,3 +3724,32 @@ same `5084`- and `7109`-token cases. No full replay or package was opened.
 Conclusion: a later global layer cannot reconstruct information discarded by
 earlier windowed layers. A future candidate must preserve selected old
 positions in every affected layer. R003b is a completed research rejection.
+
+## 2026-07-20 - Part 2 R003d Tiered Attention Horizons
+
+Experiment:
+
+- Image: `localhost/part2-lfm25-r002k:fused-bf16-greedy`.
+- Hardware envelope: RTX 5080, 3 CPU cores, 8 GiB RAM, GPU utilization `0.80`.
+- Maps: `safe8192`, `mid6144` and `front3`; full-attention layers only.
+
+Results:
+
+- All three profiles passed the latency gate.
+- `safe8192` lost zero control-pass retrieval cases in two repeats and gained
+  one case at 7,109 actual prompt tokens. `mid6144` lost one; `front3` lost two.
+- Two safe8192 full replays scored `61.8737` and `61.9014`, mean `61.8876`,
+  versus two unbounded controls at mean `56.5450`.
+- Mean TTFT p50/p95 changed `114.262/315.560ms -> 90.966/245.763ms`.
+- Mean TPOT p95 changed `4.159ms -> 3.612ms`; all four runs had zero graded
+  failures.
+- GPQA proxy: `23/100`, 11 parse failures; controls observed `21..22/100`.
+
+Conclusion:
+
+- `safe8192` is a stable local research winner for the inferred long-history
+  workload, not a portable H200 kernel result.
+- The gain combines bounded attention with a larger KV pool at the same memory
+  fraction. The short GPQA proxy cannot test changed long-context semantics.
+- No image, Compose or Portal artifact follows. Next work requires a
+  prefix-plus-recent retention design or target-qualified attention path.

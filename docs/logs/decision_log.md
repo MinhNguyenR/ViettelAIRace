@@ -3380,3 +3380,26 @@ Decision:
 - do not package a selective-global overlay;
 - require a retention pattern that preserves selected old information in each
   affected layer before reopening bounded-attention score work.
+
+## Decision 016 - Retain R003d Safe8192 As Research Only
+
+Reason:
+
+- A tiered horizon map with `4096` on full-attention layers 2 and 5 and
+  `8192` on layers 8, 10, 12 and 14 passed the paired retrieval gate twice.
+- Two full replays averaged `61.8876` versus `56.5450` for two unbounded
+  controls, with lower TTFT p50/p95 and TPOT p95 and zero graded failures.
+- More aggressive maps lost control-pass retrieval cases, while the short GPQA
+  proxy is too short to validate long-context semantics.
+- The score gain also includes increased KV capacity at the same memory
+  fraction, so it cannot be described as an isolated attention-kernel gain.
+
+Decision:
+
+- Keep `safe8192` as the balanced local research reference.
+- Close `mid6144` and `front3` and close further scalar horizon tuning.
+- Do not merge the map into R002k or create a Docker/Compose/Portal artifact.
+- Reopen only with request-local prefix-plus-recent retention or a target-
+  qualified attention implementation, plus a real long-context quality gate.
+
+Status: accepted as research evidence; serving promotion withheld.

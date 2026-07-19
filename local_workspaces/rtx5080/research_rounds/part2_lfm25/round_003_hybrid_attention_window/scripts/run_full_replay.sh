@@ -21,6 +21,7 @@ GPU_UTILIZATION="${R003_GPU_UTILIZATION:-0.80}"
 ALLOC_CONF="${R003_ALLOC_CONF:-expandable_segments:True}"
 WINDOW_SIZE="${R003_ATTENTION_WINDOW:-8192}"
 GLOBAL_LAYERS="${R003B_GLOBAL_LAYERS:-}"
+WINDOW_MAP="${R003D_WINDOW_MAP:-}"
 PROMPT_MODE="${R003_PROMPT_MODE:-append_only_static_assistant}"
 CONVERSATION_LIMIT="${R003_CONVERSATION_LIMIT:-}"
 case "$MODE" in
@@ -45,6 +46,7 @@ printf '%s\n' "$MODE" >"$RUN_DIR/mode.txt"
 printf '%s\n' "$WINDOW_ENABLED" >"$RUN_DIR/window_enabled.txt"
 printf '%s\n' "$WINDOW_SIZE" >"$RUN_DIR/window_size.txt"
 printf '%s\n' "$GLOBAL_LAYERS" >"$RUN_DIR/global_layers.txt"
+printf '%s\n' "$WINDOW_MAP" >"$RUN_DIR/window_map.txt"
 printf '%s\n' "$PROMPT_MODE" >"$RUN_DIR/prompt_mode.txt"
 printf '%s\n' "$CONVERSATION_LIMIT" >"$RUN_DIR/conversation_limit.txt"
 
@@ -75,6 +77,7 @@ docker run --detach \
   --env VLLM_R003_WINDOW="$WINDOW_ENABLED" \
   --env R003_ATTENTION_WINDOW="$WINDOW_SIZE" \
   --env R003B_GLOBAL_LAYERS="$GLOBAL_LAYERS" \
+  --env R003D_WINDOW_MAP="$WINDOW_MAP" \
   --volume "$OVERLAY_DIR:/r003-overlay:ro" \
   --volume "$MODEL_DIR:/model:ro" \
   --entrypoint python3 \

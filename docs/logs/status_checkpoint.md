@@ -1415,3 +1415,29 @@ If bounded attention remains eligible after rules/semantics review, test a
 retention pattern that preserves a small, deterministic old-token/sink set in
 every affected layer. Do not reopen scalar window sizes or global-layer
 placement without a new quality hypothesis and the paired retrieval gate.
+
+## Part 2 R003d Completion Checkpoint - 2026-07-20
+
+- Tiered horizon overlays were static-tested and verified against the exact six
+  full-attention layers; all ten ShortConv layers and R002k hooks remained
+  unchanged.
+- `safe8192` passed profile and paired retrieval gates twice. `mid6144` lost
+  one control-pass retrieval case and `front3` lost two, so both were closed.
+- Two safe8192 full replays averaged `61.8876` versus `56.5450` for two
+  unbounded controls. TTFT p50/p95 improved `114.262/315.560 ->
+  90.966/245.763ms`; TPOT p95 improved `4.159 -> 3.612ms`; all graded runs
+  had zero failures.
+- The short GPQA proxy returned `23/100` versus a noisy `21..22/100` control
+  range. It is not a long-context semantic gate because its prompts are below
+  8192 tokens.
+- R003d is complete as local research only. The measured gain includes a
+  larger KV pool and a semantic horizon change; no image, Compose or Portal
+  artifact was created. R002k remains the submission incumbent.
+
+## Next Recommended Task
+
+Design a request-local prefix-plus-recent retention experiment or qualify an
+H200-specific full-attention path. Preserve selected old positions in every
+affected layer, repeat the 14-case long-context retrieval gate, and keep
+`safe8192` as the comparison reference. Do not perform another scalar horizon
+sweep or package a semantic-changing overlay without a rules decision.

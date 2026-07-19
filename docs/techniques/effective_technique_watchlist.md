@@ -1139,3 +1139,23 @@ prefill-specific FA3 mechanism on H200, requiring backend proof and unchanged
 decode/TBT. Separately retain the aligned second-step ceiling (`2.296ms`
 weighted), but do not implement it without an exact Mamba-state continuity
 proof.
+
+## Tiered Full-Attention Horizons - R003d
+
+Effect: a fixed map `2:4096,5:4096,8:8192,10:8192,12:8192,14:8192` improved
+the local two-run score mean from `56.5450` to `61.8876`. TTFT p50/p95 fell
+`23.296/69.797ms` and TPOT p95 fell `0.547ms`; all graded requests completed.
+The same map preserved every control-pass case in a 14-case long-context probe
+and gained one case at 7,109 tokens in both repeats.
+
+Trade-off: this is a semantic attention-horizon change, not a semantics-
+preserving kernel optimization. It also increases the available KV pool at the
+same memory fraction. The 100-question GPQA proxy is short and returned
+`23/100` versus a noisy `21..22/100` control range, so it cannot certify long
+history. More aggressive `6144` and `front3` maps lost retrieval cases.
+
+Carry-forward: keep `safe8192` as a local research reference only. Do not
+submit or package it until BTC request construction, rules interpretation and
+long-context quality are resolved. The next useful technique is a request-local
+prefix-plus-recent retention mask that preserves selected old positions in
+every affected layer without blindly truncating the middle of the context.

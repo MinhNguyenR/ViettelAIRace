@@ -114,3 +114,32 @@ branch remains below the aggregate score of the 8192 research candidate.
 R003c closes scalar placement permutations. The next bounded-attention idea
 must retain selected old positions in every affected layer rather than add
 another globally causal layer after information has already been discarded.
+
+## Follow-Up R003d - Tiered Attention Horizons
+
+R003d tested a fixed per-layer horizon map to interpolate between the score-max
+`4096` branch and the quality-balanced `8192` branch:
+
+```text
+safe8192: 2:4096, 5:4096, 8:8192, 10:8192, 12:8192, 14:8192
+mid6144:  2:4096, 5:4096, 8:6144, 10:6144, 12:6144, 14:6144
+front3:   2:4096, 5:4096, 8:4096, 10:8192, 12:8192, 14:8192
+```
+
+All three profiles passed the latency gate. The paired retrieval gate retained
+only `safe8192`: it lost zero control-pass cases in two repeats and gained one
+case at 7,109 actual prompt tokens. `mid6144` lost one control-pass case and
+`front3` lost two.
+
+Two full replays of `safe8192` averaged `61.8876` points versus `56.5450` for
+two unbounded controls. Mean TTFT p50/p95 improved from `114.262/315.560ms`
+to `90.966/245.763ms`; TPOT p95 improved from `4.159ms` to `3.612ms`, with
+zero graded failures in all four runs. The short GPQA proxy was `23/100`
+versus controls at `21..22/100`, but its prompts are shorter than the horizon.
+
+R003d closes scalar horizon interpolation locally. Keep `safe8192` as a
+research reference only: the gain combines bounded attention with a larger KV
+pool at the same memory fraction, and the horizon changes model semantics for
+long contexts. No image, Compose or Portal artifact follows. The next bounded
+attention branch must preserve selected old information rather than simply
+truncating it.

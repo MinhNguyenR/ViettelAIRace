@@ -1,0 +1,19 @@
+{
+  "schema": "r003d.quality_summary.v1",
+  "candidate": {
+    "label": "safe8192",
+    "accuracy": 0.23,
+    "correct": 23,
+    "total": 100,
+    "parsed": 89,
+    "parse_failures": 11,
+    "source": "analysis/quality-safe8192-20260720-012301/summary.json"
+  },
+  "controls": {
+    "observed_accuracy_range": [0.21, 0.22],
+    "observed_correct_range": [21, 22],
+    "observed_parse_failure_range": [10, 11],
+    "note": "Short proxy prompts are below the 8192-token horizon; this is not a long-context equivalence proof."
+  },
+  "decision": "short_prompt_regression_not_observed; long_context_semantics_unresolved"
+}

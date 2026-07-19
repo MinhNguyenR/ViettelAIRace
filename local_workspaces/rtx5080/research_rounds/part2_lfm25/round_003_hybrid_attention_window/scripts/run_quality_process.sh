@@ -19,9 +19,11 @@ CONTAINER_NAME="part2-lfm25-r003-quality-${LABEL}-${PORT}"
 OVERLAY_DIR="${R003_OVERLAY_DIR:-${PACKAGING_DIR}/overlay}"
 ANALYSIS_DIR="${R003_ANALYSIS_DIR:-${PACKAGING_DIR}/analysis}"
 GLOBAL_LAYERS="${R003B_GLOBAL_LAYERS:-}"
+WINDOW_MAP="${R003D_WINDOW_MAP:-}"
 RUN_DIR="${ANALYSIS_DIR}/quality-${LABEL}-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "${RUN_DIR}"
 printf '%s\n' "${GLOBAL_LAYERS}" >"${RUN_DIR}/global_layers.txt"
+printf '%s\n' "${WINDOW_MAP}" >"${RUN_DIR}/window_map.txt"
 
 cleanup() {
   docker logs "${CONTAINER_NAME}" >"${RUN_DIR}/server.log" 2>&1 || true
@@ -46,6 +48,7 @@ docker run --detach \
   --env VLLM_R003_WINDOW="${WINDOW_ENABLED}" \
   --env R003_ATTENTION_WINDOW="${WINDOW_SIZE}" \
   --env R003B_GLOBAL_LAYERS="${GLOBAL_LAYERS}" \
+  --env R003D_WINDOW_MAP="${WINDOW_MAP}" \
   --volume "${OVERLAY_DIR}:/r003-overlay:ro" \
   --volume "${MODEL_DIR}:/model:ro" \
   --entrypoint python3 \
