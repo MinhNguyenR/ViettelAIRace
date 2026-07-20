@@ -233,3 +233,27 @@ with FP8 KV while RTX 5080 uses FlashInfer, so local kernel speed does not
 transfer. Keep R002k decode immutable. The next branch may qualify an H200 FA3
 prefill-only mechanism or close on source capability; no image or Portal probe
 opens until phase isolation and target execution are proven.
+
+## Phase P - H200 FA3 Exactness Boundary
+
+Status: complete and closed source-only.
+
+R002z verifies that exact-image SM90 dispatch already selects FA3, enables its
+AOT schedule and uses a valid 16-token KV block. No exposed prefill split knob
+has a source-backed target gain; batch invariance is unsafe and TRT-LLM
+attention requires SM100. Keep automatic backend selection and create no
+candidate artifact.
+
+## Phase Q - Sparse ShortConv Boundary Checkpoint
+
+Status: implementation complete; idle qualification pending.
+
+R002aa replaces align mode's second tiny full-model step with one sparse
+boundary checkpoint and one final running state. The proof retains align-like
+capacity and executes cached turns in one step. The initial one-process
+no-pad/pad16/pad32 screen ran under `23-39%` game-induced background GPU load,
+so it is directional only.
+
+Do not package from the contaminated screen. Repeat no-pad and pad32 twice on
+an idle GPU, then require cold quality and complete replay gates before any
+promotion. R002k remains frozen until those gates pass.

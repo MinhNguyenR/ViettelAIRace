@@ -856,3 +856,29 @@ packaged FA3 binary, FA3 explicitly supports FP8 KV on family 90, and automatic
 priority selects FlashAttention before FlashInfer. TRT-LLM attention requires
 SM100 in this image. Complete the attribution, create no serving artifact and
 open only H200-specific FA3 prefill qualification; R002k remains incumbent.
+
+## H200 FA3 Exactness Boundary (Subround 002z)
+
+The exact image already selects FA3 on H200 SM90 with FP8 KV and enables its
+AOT schedule. Long-prefill split count remains backend-heuristic, graph split
+caps do not cover the 4k prefill range, the 16-token KV block is already the
+valid contract, and the declared prefill/decode split has no runtime consumer.
+Batch invariance would alter decode and TRT-LLM attention requires SM100.
+
+No exact-image scalar passes the implementation gate. Close R002z without GPU,
+quality, replay, image, Compose or Portal work.
+
+## Sparse ShortConv Boundary Checkpoint (Subround 002aa)
+
+R002aa proves align mode's tiny second model step is removable without
+all-mode's roughly threefold cache-capacity loss. A compact state table keeps
+the prior state, crossed full-block state and final partial-tail state. Sparse
+capacity is `1,592,154` tokens at `.78`, versus about `530k` for all/block16,
+and cached turns change from two model steps to one.
+
+One-process A/B indicates cached-turn gains, but the user confirmed a game was
+active and launch telemetry recorded `23-39%` background GPU utilization.
+No-pad showed `-2.992ms` cached GPU mean, pad16 `-0.712ms`, and pad32
+`-3.744/-3.894ms`; these are directional and cannot select a final policy.
+Stop GPU work, repeat no-pad/pad32 on an idle device, then run cold quality and
+the complete 420-request replay. No R002aa serving artifact exists yet.

@@ -1,6 +1,7 @@
 # Round 002 - Portal-Calibrated Decode First
 
-Status: core round and subrounds 002a-002y complete. Portal Attempt 02 confirms
+Status: core round and subrounds 002a-002z complete; subround 002aa is active
+and waiting for an idle-GPU qualification window. Portal Attempt 02 confirms
 the prefix-enabled append-only branch; Attempt 03 rejects the fixed-size/
 no-prefix hedge on H200. The output-only FP8 head is latency-positive but
 blocked by token drift.
@@ -173,6 +174,20 @@ local kernel is FlashInfer, while exact source proves H200 auto-selects
 packaged FA3 for FP8 KV. This closes local kernel promotion, preserves R002k,
 and opens only target-specific FA3 qualification.
 
+Subround 002z completed that target-specific boundary as a source-only audit.
+The exact image already enables FA3 and its AOT schedule on H200 SM90 with FP8
+KV; no safe scalar exposes a better split policy, and TRT-LLM attention needs
+SM100. It is closed without GPU, image or Portal work.
+
+Subround 002aa attacks a different R002y finding: align-mode cached turns run
+an extra `2-14` token full-model step to preserve the final ShortConv block
+boundary. A sparse dual-checkpoint overlay now stores the boundary and final
+state in one forward, retains about `1.59M` local cache tokens and changes
+cached turns from two model steps to one. In-process screens are directional
+only because a game held background GPU utilization at `23-39%`; clean
+no-pad/pad32 repeats, cold quality and full replay remain mandatory. R002k is
+still the incumbent and no R002aa package exists.
+
 ## Files
 
 - `round_plan.md`: ordered gates and promotion rules.
@@ -245,3 +260,9 @@ and opens only target-specific FA3 qualification.
 - `subrounds/subround_002y_cached_turn_prefill_attribution/`: complete six-turn
   cached-prefill CUDA Event/Kineto attribution. Attention explains `92.64%` of
   the TTFT GPU growth; the SM120/SM90 backend mismatch blocks local promotion.
+- `subrounds/subround_002z_h200_fa3_boundary/`: complete exact-image H200 FA3
+  source boundary; automatic dispatch already activates the safe mechanisms,
+  so the branch closes without a candidate.
+- `subrounds/subround_002aa_lfm2_shortconv_state_checkpoint/`: active sparse
+  ShortConv boundary-state implementation, capacity proof and one-process A/B
+  harness; final selection waits for an idle GPU.
