@@ -1,0 +1,9 @@
+{
+  "schema": "r003h.quality_summary.v1",
+  "run": "quality-cascade-20260720-144127",
+  "correct": 22,
+  "total": 100,
+  "cascade_activated": false,
+  "interpretation": "inactive_path_only",
+  "decision": "not_a_long_context_quality_gate"
+}

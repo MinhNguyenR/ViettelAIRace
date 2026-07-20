@@ -93,6 +93,39 @@ just add a global layer after the truncation.
 See `subrounds/subround_003b_sparse_global_attention/` for the exact overlay,
 compact measurements and rejection record.
 
+## Follow-Up R003h - FlashInfer Cascade Prefix/Recent Probe
+
+R003h verified FlashInfer's `MultiLevelCascadeAttentionWrapper` on BF16 and
+FP8 paged KV and then exercised a decode-only overlay on the native FlashInfer
+backend. The primitive can be substantially faster when the selected key set
+is only `prefix OR recent`, but that layout discards the middle of a long
+sequence and is therefore an approximate sparse-attention policy. It is not an
+exact replacement for the original full-attention model.
+
+The candidate completed the local replay without failures, but the matched
+cascade-off control scored `64.7741` versus `60.6272` for the candidate. The
+candidate also had a higher TPOT median and a different output hash. R003h is
+closed and rejected for submission. The next cascade experiment must target
+the exact shared-prefix case already represented by vLLM metadata, where all
+non-shared tokens remain visible.
+
+See `subrounds/subround_003h_flashinfer_cascade_probe/` for the primitive,
+smoke, quality and full-replay records.
+
+## Follow-Up R003i - Exact Shared-Prefix Cascade
+
+R003i tested vLLM's exact two-level shared-prefix cascade without dropping any
+private suffix token. Forced FlashInfer was operational with BF16 and FP8 KV,
+but the public proxy produced zero cascade builds and scored `51.1766` versus
+`52.6311` for its same-backend matched control.
+
+The native FlashAttention path was then bracketed with global cascade on/off.
+At batch 8, candidate/control scores were `35.6212/41.1370`; at batch 20 they
+were `19.8181/38.2097`. Native cascade increased both TTFT and TPOT when it
+activated. The runtime-SM model predicts more frequent activation on H200
+`1g.18gb`, but there is no positive target measurement. R003i is closed: keep
+R002k's default cascade setting and create no image, Compose or Portal attempt.
+
 ## Follow-Up R003c - Sparse Windowed Layer Placement
 
 R003c tested six placements that windowed only two or three of the six

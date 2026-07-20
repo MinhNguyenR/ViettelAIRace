@@ -40,3 +40,7 @@
 - The official rules permit serving optimizations but do not explicitly say
   whether changing the effective attention horizon is valid. Keep the
   candidate out of the Portal queue until this is reviewed.
+- R003i exact cascade retained all tokens but still changed floating-point
+  reduction order and greedy output hashes. Forced FlashInfer found no public
+  prefix cohort, while native FlashAttention cascade regressed at batch 8 and
+  20. Do not enable global cascade from the H200 SM-count model alone.

@@ -121,6 +121,20 @@ use a sparse retention mask or another mechanism that preserves selected old
 positions in every affected layer and must repeat the long-context retrieval
 gate.
 
+## Follow-Up 003h - FlashInfer Cascade Prefix/Recent Probe
+
+Status: complete and rejected.
+
+The primitive FlashInfer cascade path passed its dtype and numerical smoke
+checks, but the integrated overlay used a sparse `prefix OR recent` key set.
+It omitted the middle range, so it changed model semantics. A full local pair
+also failed the promotion comparison: candidate `60.6272` versus control
+`64.7741`, with candidate TPOT p50 `2.669ms` versus `2.307ms`.
+
+Decision: keep this as evidence about the FlashInfer API only. Do not package
+the overlay. Reopen cascade work only for exact shared-prefix attention, not
+for another sparse prefix/window sweep.
+
 ## Follow-Up 003d - Tiered Attention Horizons
 
 Status: complete and retained as research-only evidence.
@@ -166,3 +180,13 @@ below native W4096. GPQA proxy repeats two points below the control repeat, and
 the target H200 SM90 backend is untested. Close the branch without image,
 Compose or Portal promotion. Reopen only for full-overlap numerical identity
 and target-backend qualification, not another prefix-size sweep.
+
+## Follow-Up 003i - Exact Shared-Prefix Cascade
+
+Status: complete and rejected.
+
+The source audit, synthetic activation, FP8 compatibility, public applicability
+and native FlashAttention A/B phases are complete. Forced FlashInfer had zero
+builds on the 420-request proxy and did not beat its matched control. Native
+global cascade regressed at both batch 8 and batch 20. Preserve the source and
+SM-count analysis, but do not modify the R002k submission configuration.

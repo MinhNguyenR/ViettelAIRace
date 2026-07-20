@@ -1,0 +1,72 @@
+{
+  "schema": "r003i.comparison.v1",
+  "environment": {
+    "image": "localhost/part2-lfm25-r002k:fused-bf16-greedy",
+    "gpu": "NVIDIA GeForce RTX 5080",
+    "cpu_limit": 3,
+    "ram_limit_gb": 8
+  },
+  "native_flash_attention": [
+    {
+      "label": "batch8_global_on",
+      "run": "replay-fa-native-8k-b8-global-on-candidate-20260720-162354",
+      "score_points": 35.62124009128554,
+      "ttft_p50_ms": 442.59306200001447,
+      "tpot_p50_ms": 2.3490239193873297,
+      "positive_decisions": 1,
+      "cascade_builds": 1
+    },
+    {
+      "label": "batch8_global_off",
+      "run": "replay-fa-native-8k-b8-global-off-control-20260720-162636",
+      "score_points": 41.137036379609235,
+      "ttft_p50_ms": 285.6575100013288,
+      "tpot_p50_ms": 2.274072274245085,
+      "positive_decisions": 0,
+      "cascade_builds": 0
+    },
+    {
+      "label": "batch20_global_on",
+      "run": "replay-fa-native-8k-b20-global-on-candidate-20260720-162905",
+      "score_points": 19.818078821240523,
+      "ttft_p50_ms": 522.9855055004009,
+      "tpot_p50_ms": 4.943386580634979,
+      "positive_decisions": 32,
+      "cascade_builds": 32
+    },
+    {
+      "label": "batch20_global_off",
+      "run": "replay-fa-native-8k-b20-global-off-control-20260720-163123",
+      "score_points": 38.20965227935636,
+      "ttft_p50_ms": 315.5825405010546,
+      "tpot_p50_ms": 2.382164129049934,
+      "positive_decisions": 0,
+      "cascade_builds": 0
+    }
+  ],
+  "full_public_flashinfer": [
+    {
+      "label": "upstream_heuristic",
+      "run": "replay-full-public-fp8-heuristic-candidate-20260720-155549",
+      "score_points": 51.17661080722187,
+      "ttft_p50_ms": 132.9729494973435,
+      "ttft_p95_ms": 420.00904450069356,
+      "tpot_p50_ms": 2.7439596105521096,
+      "tpot_p95_ms": 4.129768965330228,
+      "positive_decisions": 0,
+      "cascade_builds": 0
+    },
+    {
+      "label": "cascade_off",
+      "run": "replay-full-public-fp8-matched-off-v2-control-20260720-163633",
+      "score_points": 52.6310912823987,
+      "ttft_p50_ms": 128.36129749848624,
+      "ttft_p95_ms": 370.35610845050553,
+      "tpot_p50_ms": 2.6976410226140146,
+      "tpot_p95_ms": 3.911591900263622,
+      "positive_decisions": 0,
+      "cascade_builds": 0
+    }
+  ],
+  "decision": "rejected_no_submission_artifact"
+}

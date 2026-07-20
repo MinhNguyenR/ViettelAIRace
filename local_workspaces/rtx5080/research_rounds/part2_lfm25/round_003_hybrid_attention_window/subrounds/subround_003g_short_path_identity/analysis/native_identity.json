@@ -1,0 +1,87 @@
+{
+  "schema": "r003g.native_identity.v1",
+  "torch_version": "2.11.0+cu130",
+  "cuda_version": "13.0",
+  "device": "NVIDIA GeForce RTX 5080",
+  "cases": [
+    {
+      "dtype": "bf16",
+      "seq_len": 257,
+      "query_len": 17,
+      "window_tokens": 64,
+      "prefix_tokens": 16,
+      "use_3d": false,
+      "max_abs": 0.0021249055862426758,
+      "mean_abs": 0.0002798603381961584,
+      "atol": 0.035
+    },
+    {
+      "dtype": "fp8",
+      "seq_len": 257,
+      "query_len": 17,
+      "window_tokens": 64,
+      "prefix_tokens": 16,
+      "use_3d": false,
+      "max_abs": 0.002472519874572754,
+      "mean_abs": 0.0002803521347232163,
+      "atol": 0.08
+    },
+    {
+      "dtype": "bf16",
+      "seq_len": 52,
+      "query_len": 4,
+      "window_tokens": 64,
+      "prefix_tokens": 48,
+      "use_3d": false,
+      "max_abs": 0.0027190446853637695,
+      "mean_abs": 0.0003334493958391249,
+      "atol": 0.035,
+      "native_zero_exact": true,
+      "native_zero_max_abs": 0.0,
+      "native_split_exact": true,
+      "native_split_max_abs": 0.0
+    },
+    {
+      "dtype": "fp8",
+      "seq_len": 257,
+      "query_len": 17,
+      "window_tokens": 512,
+      "prefix_tokens": 64,
+      "use_3d": false,
+      "max_abs": 0.0012072324752807617,
+      "mean_abs": 0.00016736971156205982,
+      "atol": 0.08,
+      "native_zero_exact": true,
+      "native_zero_max_abs": 0.0,
+      "native_split_exact": true,
+      "native_split_max_abs": 0.0
+    },
+    {
+      "dtype": "bf16",
+      "seq_len": 257,
+      "query_len": 1,
+      "window_tokens": 512,
+      "prefix_tokens": 64,
+      "use_3d": true,
+      "max_abs": 0.0007599294185638428,
+      "mean_abs": 0.00016361664165742695,
+      "atol": 0.035,
+      "native_zero_exact": true,
+      "native_zero_max_abs": 0.0,
+      "native_split_exact": true,
+      "native_split_max_abs": 0.0
+    },
+    {
+      "dtype": "bf16",
+      "seq_len": 257,
+      "query_len": 1,
+      "window_tokens": 64,
+      "prefix_tokens": 16,
+      "use_3d": true,
+      "max_abs": 0.002083897590637207,
+      "mean_abs": 0.00027986051281914115,
+      "atol": 0.035
+    }
+  ],
+  "decision": "pass"
+}

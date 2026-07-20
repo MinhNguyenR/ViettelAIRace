@@ -1,0 +1,9 @@
+analysis/*
+!analysis/cascade_probe.json
+!analysis/cascade_probe_b8_s32768.json
+!analysis/cascade_probe_b20_s32768.json
+!analysis/full_replay_comparison.json
+!analysis/quality_summary.json
+overlay/__pycache__/
+scripts/__pycache__/
+tests/__pycache__/

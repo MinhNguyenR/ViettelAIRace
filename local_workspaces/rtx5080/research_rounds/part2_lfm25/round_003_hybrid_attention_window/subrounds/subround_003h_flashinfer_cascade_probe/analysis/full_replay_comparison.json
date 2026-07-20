@@ -1,0 +1,24 @@
+{
+  "schema": "r003h.full_replay_comparison.v1",
+  "candidate": {
+    "run": "full-replay-cascade-full-candidate-u0p80-20260720-144441",
+    "score_points": 60.6272,
+    "ttft_p50_ms": 90.42,
+    "ttft_p95_ms": 205.35,
+    "tpot_p50_ms": 2.669,
+    "tpot_p95_ms": 3.538,
+    "successful_graded": 330,
+    "failed_graded": 0
+  },
+  "control": {
+    "run": "full-replay-cascade-full-control-control-u0p80-20260720-145256",
+    "score_points": 64.7741,
+    "ttft_p50_ms": 84.20,
+    "ttft_p95_ms": 232.63,
+    "tpot_p50_ms": 2.307,
+    "tpot_p95_ms": 3.330,
+    "successful_graded": 330,
+    "failed_graded": 0
+  },
+  "decision": "rejected"
+}

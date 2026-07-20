@@ -1,0 +1,46 @@
+{
+  "schema": "r003h.flashinfer_cascade_probe.v1",
+  "generated_at": "2026-07-20T07:27:32Z",
+  "results": [
+    {
+      "dtype": "bf16",
+      "device": "NVIDIA GeForce RTX 5080",
+      "torch": "2.11.0+cu130",
+      "flashinfer": "0.6.11.post2",
+      "batch": 8,
+      "seq_len": 32768,
+      "prefix_tokens": 128,
+      "recent_tokens": 4096,
+      "block_size": 16,
+      "cascade_max_abs": 0.00044517219066619873,
+      "cascade_mean_abs": 6.0158250562381e-05,
+      "full_vs_dense_selected_max_abs": 0.08353497833013535,
+      "recent_vs_dense_selected_max_abs": 0.06328364461660385,
+      "cascade_ms": 0.03977439999580383,
+      "full_ms": 0.1542472004890442,
+      "recent_ms": 0.012789599597454071,
+      "cascade_speedup_vs_full": 3.878052227194305
+    },
+    {
+      "dtype": "fp8",
+      "device": "NVIDIA GeForce RTX 5080",
+      "torch": "2.11.0+cu130",
+      "flashinfer": "0.6.11.post2",
+      "batch": 8,
+      "seq_len": 32768,
+      "prefix_tokens": 128,
+      "recent_tokens": 4096,
+      "block_size": 16,
+      "cascade_max_abs": 0.0005279555916786194,
+      "cascade_mean_abs": 6.076705903979018e-05,
+      "full_vs_dense_selected_max_abs": 0.09500019252300262,
+      "recent_vs_dense_selected_max_abs": 0.022509999573230743,
+      "cascade_ms": 0.04208639860153198,
+      "full_ms": 0.08108800053596496,
+      "recent_ms": 0.015807999670505522,
+      "cascade_speedup_vs_full": 1.9267032397733668
+    }
+  ],
+  "errors": [],
+  "decision": "primitive_valid_candidate_rejected"
+}

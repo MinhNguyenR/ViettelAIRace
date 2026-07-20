@@ -1,0 +1,11 @@
+prefix_tokens,batch_size,num_sms,cascade_time,flash_decoding_time,use_cascade,reason
+8192,8,16,128,256,1,performance_model
+8192,20,16,128,640,1,performance_model
+8192,8,18,128,228,1,performance_model
+8192,20,18,128,569,1,performance_model
+8192,8,19,128,216,1,performance_model
+8192,20,19,128,539,1,performance_model
+8192,8,84,64,49,0,performance_model
+8192,20,84,64,122,1,performance_model
+8192,8,132,64,32,0,performance_model
+8192,20,132,64,78,1,performance_model
