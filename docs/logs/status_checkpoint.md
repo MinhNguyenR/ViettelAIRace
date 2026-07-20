@@ -1441,3 +1441,23 @@ H200-specific full-attention path. Preserve selected old positions in every
 affected layer, repeat the 14-case long-context retrieval gate, and keep
 `safe8192` as the comparison reference. Do not perform another scalar horizon
 sweep or package a semantic-changing overlay without a rules decision.
+
+## Part 2 R003e Completion Checkpoint - 2026-07-20
+
+- Exact Triton backend, six-layer topology, FP8 KV, CUDA Graph and prefix
+  metadata gates pass under RTX 5080, 3 CPU cores and 8 GiB RAM.
+- The no-prefix 4096-window diagnostic reaches `62.364/75.223ms` at turns
+  0/5 and confirms Triton/window itself is viable.
+- Prefixes `64/128/256` all reach about `70/187ms`; each is more than `72ms`
+  worse than unbounded at turn 5 and fails the registered profile gate.
+- Invalid pre-fix runs are explicitly excluded, and all harnesses now assert
+  exact R003e env propagation and metadata state.
+- No retrieval, replay, quality, image, Compose or Portal artifact follows.
+
+## Next Recommended Task
+
+Audit a two-range attention implementation that evaluates only the fixed
+prefix and recent window and merges online-softmax statistics. Open GPU work
+only if source analysis proves the discarded middle span is not scanned; keep
+the no-prefix Triton profile as the performance floor and safe8192 as the
+quality-oriented reference.

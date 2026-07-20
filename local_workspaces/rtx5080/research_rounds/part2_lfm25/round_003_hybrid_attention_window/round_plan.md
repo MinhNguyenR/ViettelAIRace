@@ -135,3 +135,14 @@ change, the short quality proxy cannot test long history, and the larger KV
 pool contributes to the measured gain. Close scalar horizon tuning. The next
 branch must investigate request-local prefix-plus-recent retention or a
 target-qualified attention path with an explicit long-context quality gate.
+
+## Follow-Up 003e - Prefix Plus Recent Triton Retention
+
+Status: complete and rejected at the profile gate.
+
+The native Triton prefix-range contract, FP8 KV path, layer topology and CUDA
+Graph compatibility were verified. A no-prefix Triton/window control passed
+the performance gate, but each non-empty prefix size (`64/128/256`) increased
+turn-5 GPU time to about `187ms`, more than `72ms` worse than the unbounded
+control. The retrieval and replay phases were skipped by dependency. Do not
+continue scalar prefix tuning on this native path.

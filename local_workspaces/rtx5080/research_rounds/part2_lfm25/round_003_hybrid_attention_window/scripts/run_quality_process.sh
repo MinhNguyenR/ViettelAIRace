@@ -20,6 +20,20 @@ OVERLAY_DIR="${R003_OVERLAY_DIR:-${PACKAGING_DIR}/overlay}"
 ANALYSIS_DIR="${R003_ANALYSIS_DIR:-${PACKAGING_DIR}/analysis}"
 GLOBAL_LAYERS="${R003B_GLOBAL_LAYERS:-}"
 WINDOW_MAP="${R003D_WINDOW_MAP:-}"
+R003E_DOCKER_ARGS=()
+if [[ -n "${R003E_ENABLED:-}" ]]; then
+  : "${R003E_WINDOW_MAP:?R003E_WINDOW_MAP is required when R003E is enabled}"
+  : "${R003E_PREFIX_TOKENS:?R003E_PREFIX_TOKENS is required when R003E is enabled}"
+  [[ "${R003E_PREFIX_TOKENS}" =~ ^[0-9]+$ ]] || {
+    echo "R003E_PREFIX_TOKENS must be a non-negative integer" >&2
+    exit 2
+  }
+  R003E_DOCKER_ARGS=(
+    --env "R003E_ENABLED=${R003E_ENABLED}"
+    --env "R003E_WINDOW_MAP=${R003E_WINDOW_MAP}"
+    --env "R003E_PREFIX_TOKENS=${R003E_PREFIX_TOKENS}"
+  )
+fi
 RUN_DIR="${ANALYSIS_DIR}/quality-${LABEL}-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "${RUN_DIR}"
 printf '%s\n' "${GLOBAL_LAYERS}" >"${RUN_DIR}/global_layers.txt"
@@ -49,6 +63,7 @@ docker run --detach \
   --env R003_ATTENTION_WINDOW="${WINDOW_SIZE}" \
   --env R003B_GLOBAL_LAYERS="${GLOBAL_LAYERS}" \
   --env R003D_WINDOW_MAP="${WINDOW_MAP}" \
+  "${R003E_DOCKER_ARGS[@]}" \
   --volume "${OVERLAY_DIR}:/r003-overlay:ro" \
   --volume "${MODEL_DIR}:/model:ro" \
   --entrypoint python3 \
@@ -88,6 +103,19 @@ while (( $(date +%s) < deadline )); do
     grep -q 'Graph capturing finished' "${RUN_DIR}/startup.log"
     if [[ "${WINDOW_ENABLED}" == "1" ]]; then
       grep -q "R003_WINDOW verified=1 window=${WINDOW_SIZE}" "${RUN_DIR}/startup.log"
+    fi
+    if [[ -n "${R003E_ENABLED:-}" ]]; then
+      grep -q "R003E hook_installed=1 prefix_tokens=${R003E_PREFIX_TOKENS} map=${R003E_WINDOW_MAP}" "${RUN_DIR}/startup.log"
+      if (( R003E_PREFIX_TOKENS > 0 )); then
+        grep -q 'R003E runner_patched=1 prefix_metadata=1' "${RUN_DIR}/startup.log"
+        grep -q "R003E_PREFIX_RANGE active=1 prefix_tokens=${R003E_PREFIX_TOKENS}" "${RUN_DIR}/startup.log"
+      else
+        grep -q 'R003E runner_patched=1 prefix_metadata=0' "${RUN_DIR}/startup.log"
+        if grep -q 'R003E_PREFIX_RANGE active=1' "${RUN_DIR}/startup.log"; then
+          echo "R003e zero-prefix control unexpectedly installed a prefix range" >&2
+          exit 1
+        fi
+      fi
     fi
     break
   fi

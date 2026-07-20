@@ -3403,3 +3403,23 @@ Decision:
   qualified attention implementation, plus a real long-context quality gate.
 
 Status: accepted as research evidence; serving promotion withheld.
+
+## Decision 017 - Close Native Triton Prefix-Range Retention
+
+Evidence:
+
+- a no-prefix Triton 4096-window control saves `39.512ms` at turn 5 versus
+  the unbounded control;
+- native prefixes `64/128/256` instead lose `72.365/73.128/72.324ms` at turn
+  5 versus unbounded, despite exact metadata delivery and matched CUDA Graph;
+- prefix size has negligible effect, indicating that the non-empty disjoint
+  range path, not the number of retained prefix tokens, owns the regression.
+
+Decision:
+
+- close R003e before retrieval and full replay;
+- retain `safe8192` as the balanced research reference and R002k as Portal
+  incumbent;
+- do not sweep more native prefix sizes or package this overlay;
+- reopen only with a split-range kernel or equivalent path that avoids work
+  over the discarded middle span and first passes the same profile gate.

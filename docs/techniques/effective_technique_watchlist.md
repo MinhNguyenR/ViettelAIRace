@@ -1159,3 +1159,19 @@ submit or package it until BTC request construction, rules interpretation and
 long-context quality are resolved. The next useful technique is a request-local
 prefix-plus-recent retention mask that preserves selected old positions in
 every affected layer without blindly truncating the middle of the context.
+
+## Native Triton Prefix-Range Retention - R003e Rejected
+
+Effect: explicit Triton plus a 4096 recent window is fast without prefix
+metadata (`62.364 -> 75.223ms` from turn 0 to turn 5). This validates the
+backend/window control.
+
+Trade-off: enabling any native `mm_prefix_range` of 64, 128 or 256 tokens
+raises turn-5 GPU time to about `187ms`, roughly `112ms` slower than the
+no-prefix Triton control and more than `72ms` slower than unbounded. Prefix
+size is not the useful tuning variable on this execution path.
+
+Carry-forward: do not use native disjoint prefix ranges for the current
+candidate and do not sweep more sizes. Preserve the mask semantics and source
+audit for a future split-range online-softmax kernel that skips the discarded
+middle span; require profile and long-context retrieval gates before replay.

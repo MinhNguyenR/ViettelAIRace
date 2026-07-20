@@ -1,0 +1,68 @@
+{
+  "schema": "r003e.profile_screen.v1",
+  "hardware": {
+    "gpu": "RTX 5080",
+    "cpu_cores": 3,
+    "ram_gib": 8,
+    "gpu_memory_utilization": 0.8
+  },
+  "control": {
+    "source": "r003d.profile_screen.v1",
+    "backend": "unbounded native auto",
+    "turn0_gpu_ms": 60.781921,
+    "turn5_gpu_ms": 114.734528
+  },
+  "candidates": {
+    "p0w4096": {
+      "run": "p0w4096-valid-timing-20260720-015805",
+      "prefix_tokens": 0,
+      "prefix_metadata": false,
+      "turn0_gpu_ms": 62.363998,
+      "turn5_gpu_ms": 75.222595,
+      "turn0_regression_percent": 2.602875,
+      "turn5_saving_ms": 39.511933,
+      "decision": "diagnostic_only_no_semantic_repair"
+    },
+    "p64w4096": {
+      "run": "p64w4096-valid-timing-20260720-015914",
+      "prefix_tokens": 64,
+      "prefix_metadata": true,
+      "turn0_gpu_ms": 69.900833,
+      "turn5_gpu_ms": 187.099747,
+      "turn0_regression_percent": 15.002672,
+      "turn5_saving_ms": -72.365219,
+      "decision": "reject_profile_gate"
+    },
+    "p128w4096": {
+      "run": "p128w4096-valid-timing-20260720-020140",
+      "prefix_tokens": 128,
+      "prefix_metadata": true,
+      "turn0_gpu_ms": 70.30381,
+      "turn5_gpu_ms": 187.862274,
+      "turn0_regression_percent": 15.66566,
+      "turn5_saving_ms": -73.127746,
+      "decision": "reject_profile_gate"
+    },
+    "p256w4096": {
+      "run": "p256w4096-valid-timing-20260720-020026",
+      "prefix_tokens": 256,
+      "prefix_metadata": true,
+      "turn0_gpu_ms": 70.223549,
+      "turn5_gpu_ms": 187.058655,
+      "turn0_regression_percent": 15.533612,
+      "turn5_saving_ms": -72.324127,
+      "decision": "reject_profile_gate"
+    }
+  },
+  "excluded_runs": [
+    {
+      "run": "p128w4096-timing-20260720-014402",
+      "reason": "R002y profiler was shadowed; no panels were executed"
+    },
+    {
+      "labels": ["p64w4096", "p256w4096", "p0w4096"],
+      "reason": "R003e variables were not forwarded into Docker; all resolved to the p128 default"
+    }
+  ],
+  "decision": "close_all_nonempty_prefix_candidates_before_retrieval"
+}

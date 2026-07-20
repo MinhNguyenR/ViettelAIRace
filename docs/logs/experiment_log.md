@@ -3753,3 +3753,18 @@ Conclusion:
   fraction. The short GPQA proxy cannot test changed long-context semantics.
 - No image, Compose or Portal artifact follows. Next work requires a
   prefix-plus-recent retention design or target-qualified attention path.
+
+## 2026-07-20 - Part 2 R003e Prefix Plus Recent Triton Screen
+
+R003e forced `TRITON_ATTN` on the six LFM2 full-attention layers and injected
+a native request-local prefix range in addition to a 4096-token recent
+window. Exact startup gates proved CUDA Graph capture, six Triton metadata
+objects and requested prefix sizes `0/64/128/256`.
+
+The no-prefix diagnostic reached turn-0/turn-5 complete GPU time
+`62.364/75.223ms`, versus the registered unbounded control at
+`60.782/114.735ms`. Prefixes `64/128/256` reached turn-5 time
+`187.100/187.862/187.059ms`. The near-identical prefix results isolate a
+large cost in the non-empty disjoint-range path rather than in retained prefix
+length. All semantic candidates fail the profile gate, so retrieval, replay,
+GPQA and packaging are skipped.

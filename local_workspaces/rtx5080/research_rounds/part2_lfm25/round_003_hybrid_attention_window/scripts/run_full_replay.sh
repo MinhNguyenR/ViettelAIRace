@@ -22,6 +22,20 @@ ALLOC_CONF="${R003_ALLOC_CONF:-expandable_segments:True}"
 WINDOW_SIZE="${R003_ATTENTION_WINDOW:-8192}"
 GLOBAL_LAYERS="${R003B_GLOBAL_LAYERS:-}"
 WINDOW_MAP="${R003D_WINDOW_MAP:-}"
+R003E_DOCKER_ARGS=()
+if [[ -n "${R003E_ENABLED:-}" ]]; then
+  : "${R003E_WINDOW_MAP:?R003E_WINDOW_MAP is required when R003E is enabled}"
+  : "${R003E_PREFIX_TOKENS:?R003E_PREFIX_TOKENS is required when R003E is enabled}"
+  [[ "${R003E_PREFIX_TOKENS}" =~ ^[0-9]+$ ]] || {
+    echo "R003E_PREFIX_TOKENS must be a non-negative integer" >&2
+    exit 2
+  }
+  R003E_DOCKER_ARGS=(
+    --env "R003E_ENABLED=${R003E_ENABLED}"
+    --env "R003E_WINDOW_MAP=${R003E_WINDOW_MAP}"
+    --env "R003E_PREFIX_TOKENS=${R003E_PREFIX_TOKENS}"
+  )
+fi
 PROMPT_MODE="${R003_PROMPT_MODE:-append_only_static_assistant}"
 CONVERSATION_LIMIT="${R003_CONVERSATION_LIMIT:-}"
 case "$MODE" in
@@ -78,6 +92,7 @@ docker run --detach \
   --env R003_ATTENTION_WINDOW="$WINDOW_SIZE" \
   --env R003B_GLOBAL_LAYERS="$GLOBAL_LAYERS" \
   --env R003D_WINDOW_MAP="$WINDOW_MAP" \
+  "${R003E_DOCKER_ARGS[@]}" \
   --volume "$OVERLAY_DIR:/r003-overlay:ro" \
   --volume "$MODEL_DIR:/model:ro" \
   --entrypoint python3 \
@@ -136,6 +151,19 @@ if [[ "$MODE" == "candidate" ]]; then
 elif grep -q 'R003_WINDOW verified=1' "$RUN_DIR/startup.log"; then
   echo "control unexpectedly enabled the R003 attention window" >&2
   exit 1
+fi
+if [[ -n "${R003E_ENABLED:-}" ]]; then
+  grep -q "R003E hook_installed=1 prefix_tokens=${R003E_PREFIX_TOKENS} map=${R003E_WINDOW_MAP}" "$RUN_DIR/startup.log"
+  if (( R003E_PREFIX_TOKENS > 0 )); then
+    grep -q 'R003E runner_patched=1 prefix_metadata=1' "$RUN_DIR/startup.log"
+    grep -q "R003E_PREFIX_RANGE active=1 prefix_tokens=${R003E_PREFIX_TOKENS}" "$RUN_DIR/startup.log"
+  else
+    grep -q 'R003E runner_patched=1 prefix_metadata=0' "$RUN_DIR/startup.log"
+    if grep -q 'R003E_PREFIX_RANGE active=1' "$RUN_DIR/startup.log"; then
+      echo "R003e zero-prefix control unexpectedly installed a prefix range" >&2
+      exit 1
+    fi
+  fi
 fi
 nvidia-smi --query-gpu=memory.total,memory.used,memory.free,utilization.gpu,power.draw \
   --format=csv,noheader,nounits >"$RUN_DIR/gpu_ready.csv"

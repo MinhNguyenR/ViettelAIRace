@@ -143,3 +143,17 @@ pool at the same memory fraction, and the horizon changes model semantics for
 long contexts. No image, Compose or Portal artifact follows. The next bounded
 attention branch must preserve selected old information rather than simply
 truncating it.
+
+## Follow-Up R003e - Native Prefix Plus Recent Mask
+
+R003e forced vLLM 0.22.1's Triton attention backend on all six attention
+layers and used its native `mm_prefix_range` tensor to retain the first
+`64/128/256` tokens in addition to a 4096-token recent window. Startup proved
+the requested range reached all six Triton metadata objects.
+
+The no-prefix Triton/window diagnostic was fast at `62.364/75.223ms` for
+turns 0/5. Every non-empty prefix was slow at about `70/187ms`; prefix size
+had no meaningful effect. This isolates the regression to the native
+disjoint-range execution path. R003e closes before retrieval and full replay.
+A future implementation must compute only the two retained ranges and merge
+their softmax statistics rather than scan the discarded middle span.

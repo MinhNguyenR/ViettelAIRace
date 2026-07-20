@@ -250,3 +250,18 @@ The quality run returned `23/100` with 11 parse failures. Controls observed
 are below 8192 tokens, this is only a short-prompt regression screen. The
 effect is also partly a KV-capacity effect, not an isolated attention-kernel
 measurement. Keep the branch research-only and do not package it for BTC.
+
+## Follow-Up R003e Result
+
+R003e tested a fixed request-local prefix plus a 4096-token recent window
+through vLLM's native Triton `mm_prefix_range` support. The no-prefix Triton
+control reached turn-0/turn-5 GPU time `62.364/75.223ms`, but prefixes
+`64/128/256` reached `69.901/187.100`, `70.304/187.862` and
+`70.224/187.059ms`, respectively. The unbounded control is
+`60.782/114.735ms`.
+
+Thus the backend/window path is viable, while any non-empty disjoint prefix
+range adds about `112ms` at turn 5 versus the no-prefix path. All semantic
+candidates fail the profile gate; retrieval, full replay and quality are
+skipped. The next branch must replace the full-span mask execution rather than
+sweep another prefix length.
