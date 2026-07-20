@@ -1484,5 +1484,5 @@ quality-oriented reference.
 
 Keep R002k as Portal incumbent and close prefix-size tuning. The only valid
 reopen condition for R003f is a full-overlap numerically identical kernel path
-followed by CUDA 12/H200 SM90 qualification. Otherwise return to a different
+followed by CUDA 13.x/H200 SM90 qualification. Otherwise return to a different
 score mechanism rather than optimizing this research Pareto point.

@@ -179,5 +179,5 @@ Two valid P64 full replays score `63.1183` and `60.3961`, mean `61.7572`:
 `0.1304` below safe8192 and `2.7932` below native W4096. The short GPQA proxy
 repeats at `20/100` versus controls at `21..22/100`, despite all prompts being
 inside the window. Keep R003f as a research Pareto point only. It is neither
-the score nor quality incumbent, and CUDA 12/H200 SM90 remains unverified; no
-image, Compose or Portal artifact is created.
+the score nor quality incumbent, and CUDA 13.x/H200 SM90 remains unverified;
+no image, Compose or Portal artifact is created.

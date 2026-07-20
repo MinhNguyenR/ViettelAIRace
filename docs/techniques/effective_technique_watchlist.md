@@ -1195,5 +1195,5 @@ qualification.
 Carry-forward: keep the compact virtual-tile mapping, overlap de-duplication
 and segmented online-softmax reduction as reusable kernel technique. Do not
 package this implementation or sweep prefix sizes. Reopen only after the
-full-overlap path is numerically equivalent to native and the exact CUDA 12/
+full-overlap path is numerically equivalent to native and the exact CUDA 13.x/
 SM90 image passes compilation, correctness and replay gates.

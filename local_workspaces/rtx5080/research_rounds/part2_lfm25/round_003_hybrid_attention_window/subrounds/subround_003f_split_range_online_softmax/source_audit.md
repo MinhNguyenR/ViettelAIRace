@@ -90,6 +90,6 @@ cache ownership, scheduler, request metadata or tokenizer. Native
 ## Remaining Portability Boundary
 
 The local image runs CUDA 13 on RTX 5080 SM120. Numerical and service tests do
-not prove compilation, register pressure or speed on BTC's CUDA 12/H200 SM90
+not prove compilation, register pressure or speed on BTC's CUDA 13.x/H200 SM90
 path. The source fork is therefore a local research implementation until an
 SM90 build/run gate is available.

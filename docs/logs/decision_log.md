@@ -3440,7 +3440,7 @@ Evidence:
   loss;
 - two valid P64 replays average `61.7572`, below safe8192 `61.8876` and native
   W4096 `64.5504`;
-- P64 GPQA repeats at `20/100` versus controls `21..22/100`, and CUDA 12/H200
+- P64 GPQA repeats at `20/100` versus controls `21..22/100`, and CUDA 13.x/H200
   SM90 execution is not qualified.
 
 Decision:
