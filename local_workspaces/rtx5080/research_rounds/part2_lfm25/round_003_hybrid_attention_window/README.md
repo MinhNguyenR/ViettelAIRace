@@ -162,3 +162,22 @@ Post-profile source correction: native `mm_prefix_range` is bidirectional only
 when both query and key are inside the range. It does not preserve prefix keys
 for later queries, and its loop helper disables sliding-window tile pruning.
 R003e is therefore a rejected API screen, not a prefix-retention candidate.
+
+## Follow-Up R003f - Compact Split-Range Triton Attention
+
+R003f forks the exact Apache-2.0 vLLM 0.22.1 Triton unified-attention kernel
+and implements the intended causal `prefix OR recent` key set. A compact
+virtual tile list skips the discarded middle before block-table/K/V loads,
+while native 2D prefill and segmented 3D decode launch policies are retained.
+
+BF16/FP8 paged-KV numerical tests pass with maximum absolute error `0.002719`.
+P64/W4096 profiles at `61.607/75.290ms` for turns 0/5, only `0.068ms` above
+the recent-only floor. P32/P64/P128 all improve the paired retrieval probe
+from `5/14` to `7/14` with no control-pass loss.
+
+Two valid P64 full replays score `63.1183` and `60.3961`, mean `61.7572`:
+`0.1304` below safe8192 and `2.7932` below native W4096. The short GPQA proxy
+repeats at `20/100` versus controls at `21..22/100`, despite all prompts being
+inside the window. Keep R003f as a research Pareto point only. It is neither
+the score nor quality incumbent, and CUDA 12/H200 SM90 remains unverified; no
+image, Compose or Portal artifact is created.

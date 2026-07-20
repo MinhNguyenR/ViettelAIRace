@@ -1,0 +1,59 @@
+{
+  "schema": "r003f.profile_screen.v1",
+  "hardware": {
+    "gpu": "RTX 5080",
+    "cpu_cores": 3,
+    "ram_gib": 8,
+    "gpu_memory_utilization": 0.8
+  },
+  "references": {
+    "unbounded": {
+      "turn0_gpu_ms": 60.781921,
+      "turn5_gpu_ms": 114.734528
+    },
+    "native_recent_w4096": {
+      "turn0_gpu_ms": 62.363998,
+      "turn5_gpu_ms": 75.222595
+    }
+  },
+  "gates": {
+    "turn0_gpu_ms_max": 69.899209,
+    "turn5_gpu_ms_max": 103.261075
+  },
+  "candidates": {
+    "p32w4096": {
+      "run": "p32w4096-timing-20260720-123128",
+      "prefix_tokens": 32,
+      "turn0_gpu_ms": 61.636288,
+      "turn5_gpu_ms": 75.683075,
+      "turn0_regression_percent": 1.405626,
+      "turn5_saving_vs_unbounded_ms": 39.051453,
+      "turn5_cost_vs_recent_ms": 0.46048,
+      "gate_pass": true
+    },
+    "p64w4096": {
+      "run": "p64w4096-timing-20260720-122207",
+      "prefix_tokens": 64,
+      "turn0_gpu_ms": 61.607105,
+      "turn5_gpu_ms": 75.290436,
+      "turn0_regression_percent": 1.357614,
+      "turn5_saving_vs_unbounded_ms": 39.444092,
+      "turn5_cost_vs_recent_ms": 0.067841,
+      "gate_pass": true
+    },
+    "p128w4096": {
+      "runs": [
+        "p128w4096-timing-20260720-115036",
+        "p128w4096-repeat-timing-20260720-115812"
+      ],
+      "prefix_tokens": 128,
+      "turn0_gpu_ms_mean": 64.052416,
+      "turn5_gpu_ms_mean": 79.198109,
+      "turn0_regression_percent": 5.380703,
+      "turn5_saving_vs_unbounded_ms": 35.536419,
+      "turn5_cost_vs_recent_ms": 3.975514,
+      "gate_pass": true
+    }
+  },
+  "decision": "p64_profile_incumbent_open_retrieval_and_replay"
+}

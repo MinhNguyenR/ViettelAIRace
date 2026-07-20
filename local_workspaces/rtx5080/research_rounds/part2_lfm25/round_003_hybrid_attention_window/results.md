@@ -270,3 +270,27 @@ Exact source then proved the native predicate is
 `query_in_range AND key_in_range`, not persistent key-prefix visibility. It
 also expands each query block to full sequence length and disables
 sliding-window tile pruning. The branch fails both semantics and performance.
+
+## Follow-Up R003f Result
+
+R003f replaces native range metadata with one compact causal prefix-plus-
+recent Triton loop. It prunes before paged-KV loads, preserves FP8 KV and the
+native segmented decode path, and applies only to the six full-attention
+layers. Primitive numerical error is at most `0.002719` across BF16, FP8,
+overlap and 3D cases.
+
+P64/W4096 is the isolated-profile winner at `61.607/75.290ms` for turns 0/5.
+All three prefix sizes score `7/14` on paired retrieval versus `5/14` control,
+with no lost control pass. Full replay is less decisive:
+
+| branch | valid scores | mean |
+|---|---:|---:|
+| native W4096 | `64.5121`, `64.5886` | `64.5504` |
+| safe8192 | `61.8737`, `61.9014` | `61.8876` |
+| split P64/W4096 | `63.1183`, `60.3961` | `61.7572` |
+
+P64 repeats the GPQA proxy at `20/100`; unbounded controls are `21/100` and
+`22/100`. Since proxy prompts are only 104..847 tokens, the local loss is a
+numerical/implementation risk rather than middle-context truncation. Reject
+promotion and packaging. The branch remains useful source evidence that exact
+split-range pruning can reach the recent-only performance floor.

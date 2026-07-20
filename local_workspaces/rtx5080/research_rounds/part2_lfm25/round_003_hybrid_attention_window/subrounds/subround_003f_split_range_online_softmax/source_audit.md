@@ -1,6 +1,6 @@
 # R003f Source Audit
 
-Status: exact-image contract established; integration details remain.
+Status: exact-image and implemented integration contracts complete.
 
 Questions to answer:
 
@@ -56,3 +56,40 @@ FP8 paged KV is handled inside the unified kernel through `KV_QUANT_MODE`; a
 fork can preserve block-table addressing and per-tensor scales without
 copying KV pages. Prefix caching and hybrid cache ownership can remain
 scheduler-visible and unchanged if only the attention read loop changes.
+
+## Implemented Contract
+
+The fork preserves the exact native wrapper signature and adds one internal
+`split_prefix_tokens` argument. For a non-zero prefix it computes a compact
+virtual tile count:
+
+```text
+prefix_tiles_before_recent + recent_tiles
+```
+
+Each virtual tile maps either to the prefix span or the recent span before
+the physical block-table entry and K/V cache pointers are loaded. Prefix
+tiles overlapping the recent span are emitted once. The per-token causal mask
+is exactly:
+
+```text
+causal AND (key_position < prefix_tokens OR key_in_recent_window)
+```
+
+The 2D prefill path retains one online-softmax accumulator. The 3D decode path
+partitions the compact virtual list across native segments; `reduce_segments`
+recomputes the same virtual-tile count and reduces only active segments.
+Paged BF16/FP8 KV modes, tensor scales, sinks, ALiBi, QQ bias, output scaling,
+block tables and CUDA Graph call shapes remain wired as in vLLM 0.22.1.
+
+The model overlay forces this backend only for full-attention layers
+`[2,5,8,10,12,14]`. It does not alter the ShortConv state manager, prefix
+cache ownership, scheduler, request metadata or tokenizer. Native
+`mm_prefix_range` is rejected to prevent combining incompatible semantics.
+
+## Remaining Portability Boundary
+
+The local image runs CUDA 13 on RTX 5080 SM120. Numerical and service tests do
+not prove compilation, register pressure or speed on BTC's CUDA 12/H200 SM90
+path. The source fork is therefore a local research implementation until an
+SM90 build/run gate is available.

@@ -536,6 +536,11 @@ submission without a fresh LFM2.5 measurement.
   same two paired long-context retrieval cases in every placement. No full
   replay, image or Compose follows; see the subround results under
   `local_workspaces/rtx5080/research_rounds/part2_lfm25/`.
+- Part 2 R003f proves compact causal prefix-plus-recent Triton pruning can
+  reach the recent-only profile floor and improve paired retrieval. P64 full
+  replay mean `61.7572` remains below safe8192/native W4096, and GPQA proxy
+  `20/100` is below controls `21..22/100`. Keep it research-only; no image,
+  Compose or Portal artifact follows.
 
 ## Where To Write New Notes
 

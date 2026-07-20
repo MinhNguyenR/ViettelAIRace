@@ -1178,3 +1178,22 @@ candidate and do not sweep more sizes. Preserve the mask semantics and source
 audit for a future split-range online-softmax kernel that skips the discarded
 middle span. The custom target must use causal `key_in_prefix`, not native
 mm-prefix semantics, and must pass profile and long-context retrieval gates.
+
+## Compact Split-Range Triton Attention - R003f Research Pareto
+
+Effect: exact causal `prefix OR recent` tile selection removes the native
+full-span scan. P64/W4096 reaches `75.290ms` at turn 5 versus `75.223ms`
+recent-only and `114.735ms` unbounded. The paired retrieval probe improves
+from `5/14` to `7/14` without losing a control pass.
+
+Trade-off: two valid full replays vary from `63.1183` to `60.3961`; mean
+`61.7572` is slightly below safe8192 and below native W4096. GPQA proxy is
+stable at `20/100`, below controls at `21..22/100`, even though its prompts
+do not activate the window. The copied Triton kernel also lacks H200 SM90
+qualification.
+
+Carry-forward: keep the compact virtual-tile mapping, overlap de-duplication
+and segmented online-softmax reduction as reusable kernel technique. Do not
+package this implementation or sweep prefix sizes. Reopen only after the
+full-overlap path is numerically equivalent to native and the exact CUDA 12/
+SM90 image passes compilation, correctness and replay gates.

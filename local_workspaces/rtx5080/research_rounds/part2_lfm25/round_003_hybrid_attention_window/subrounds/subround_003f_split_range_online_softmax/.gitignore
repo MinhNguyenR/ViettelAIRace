@@ -1,6 +1,11 @@
 analysis/*
 !analysis/.gitkeep
+!analysis/full_replay_comparison.json
 !analysis/opportunity_model.json
+!analysis/primitive_numerics.json
+!analysis/profile_screen.json
+!analysis/quality_comparison.json
+!analysis/retrieval_comparison.json
 !analysis/source_contract.json
 overlay/__pycache__/
 tests/__pycache__/

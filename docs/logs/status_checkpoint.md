@@ -1463,3 +1463,26 @@ prefix and recent window and merges online-softmax statistics. Open GPU work
 only if source analysis proves the discarded middle span is not scanned; keep
 the no-prefix Triton profile as the performance floor and safe8192 as the
 quality-oriented reference.
+
+## Part 2 R003f Completion Checkpoint - 2026-07-20
+
+- Exact vLLM 0.22.1 Triton source was forked with its Apache-2.0 header and a
+  compact causal prefix-plus-recent tile list that prunes before K/V loads.
+- BF16, FP8 paged-KV, overlap and segmented-3D numerical cases pass; maximum
+  absolute error is `0.002719`.
+- P64/W4096 reaches `61.607/75.290ms` at turns 0/5. P32/P64/P128 improve the
+  paired retrieval probe `5/14 -> 7/14` with zero control-pass loss.
+- Two valid P64 replays score `63.1183/60.3961`, mean `61.7572`, versus
+  safe8192 `61.8876` and native W4096 `64.5504`.
+- P64 GPQA proxy repeats at `20/100` versus controls `21..22/100`; prompts are
+  below the window, so strict numerical/quality equivalence fails.
+- Two container-collision summaries are excluded and the harness now uses
+  timestamped names plus a port-occupancy guard.
+- No image, Compose or Portal artifact is created; H200 SM90 is unverified.
+
+## Next Recommended Task
+
+Keep R002k as Portal incumbent and close prefix-size tuning. The only valid
+reopen condition for R003f is a full-overlap numerically identical kernel path
+followed by CUDA 12/H200 SM90 qualification. Otherwise return to a different
+score mechanism rather than optimizing this research Pareto point.

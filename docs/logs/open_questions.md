@@ -36,6 +36,9 @@ These must be resolved before final optimization/submission decisions.
   behavior change? R003 remains out of the Portal queue until this is clear.
 - On H200 SM90, does the same per-layer window retain the expected FA3 path and
   the larger KV-capacity benefit without changing decode graph behavior?
+- Can the R003f vLLM Triton fork compile and retain its compact 2D/3D tile
+  behavior under BTC CUDA 12 on H200 SM90, and can its full-overlap path match
+  native outputs closely enough to remove the observed short-GPQA risk?
 
 ## Resolved
 

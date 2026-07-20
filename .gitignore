@@ -1,6 +1,7 @@
 .venv/
 __pycache__/
 *.py[cod]
+._*
 .pytest_cache/
 .ruff_cache/
 *.egg-info/
@@ -8,6 +9,12 @@ __pycache__/
 .env
 models/
 datasets/
+input/__MACOSX/
+input/quality/private/
+input/quality/*.csv
+input/quality/*.json
+input/quality/*.jsonl
+!input/quality/README.md
 *.safetensors
 *.bin
 *.pt
@@ -15,10 +22,13 @@ datasets/
 
 metrics/*.jsonl
 metrics/*.csv
+metrics/*.json
 reports/*.html
 reports/*.json
+/logs/
 experiments/[0-9]*/
 experiments/*/artifacts/
+local_workspaces/rtx5080/model_artifacts/
 
 docker/.cache/
 submissions/*.zip

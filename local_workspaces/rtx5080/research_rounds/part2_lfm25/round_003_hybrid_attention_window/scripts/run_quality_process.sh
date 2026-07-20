@@ -15,7 +15,6 @@ DATASET="${ROOT_DIR}/input/quality/private/gpqa_diamond_100.jsonl"
 EVALUATOR="${ROOT_DIR}/local_workspaces/rtx5080/research_rounds/warmup_rounds/round_007_kv_cache_dtype/subrounds/round_007b_gpqa_diamond_accuracy/scripts/evaluate_gpqa_mcq.py"
 IMAGE_TAG="${R002K_IMAGE_TAG:-localhost/part2-lfm25-r002k:fused-bf16-greedy}"
 PORT="${3:-18120}"
-CONTAINER_NAME="part2-lfm25-r003-quality-${LABEL}-${PORT}"
 OVERLAY_DIR="${R003_OVERLAY_DIR:-${PACKAGING_DIR}/overlay}"
 ANALYSIS_DIR="${R003_ANALYSIS_DIR:-${PACKAGING_DIR}/analysis}"
 GLOBAL_LAYERS="${R003B_GLOBAL_LAYERS:-}"
@@ -34,7 +33,27 @@ if [[ -n "${R003E_ENABLED:-}" ]]; then
     --env "R003E_PREFIX_TOKENS=${R003E_PREFIX_TOKENS}"
   )
 fi
-RUN_DIR="${ANALYSIS_DIR}/quality-${LABEL}-$(date +%Y%m%d-%H%M%S)"
+R003F_DOCKER_ARGS=()
+if [[ -n "${R003F_ENABLED:-}" ]]; then
+  if [[ -n "${R003E_ENABLED:-}" ]]; then
+    echo "R003E_ENABLED and R003F_ENABLED are mutually exclusive" >&2
+    exit 2
+  fi
+  : "${R003F_WINDOW_MAP:?R003F_WINDOW_MAP is required when R003F is enabled}"
+  : "${R003F_PREFIX_TOKENS:?R003F_PREFIX_TOKENS is required when R003F is enabled}"
+  [[ "${R003F_PREFIX_TOKENS}" =~ ^[0-9]+$ ]] || {
+    echo "R003F_PREFIX_TOKENS must be a non-negative integer" >&2
+    exit 2
+  }
+  R003F_DOCKER_ARGS=(
+    --env "R003F_ENABLED=${R003F_ENABLED}"
+    --env "R003F_WINDOW_MAP=${R003F_WINDOW_MAP}"
+    --env "R003F_PREFIX_TOKENS=${R003F_PREFIX_TOKENS}"
+  )
+fi
+STAMP="$(date +%Y%m%d-%H%M%S)"
+CONTAINER_NAME="part2-lfm25-r003-quality-${LABEL}-${PORT}-${STAMP}"
+RUN_DIR="${ANALYSIS_DIR}/quality-${LABEL}-${STAMP}"
 mkdir -p "${RUN_DIR}"
 printf '%s\n' "${GLOBAL_LAYERS}" >"${RUN_DIR}/global_layers.txt"
 printf '%s\n' "${WINDOW_MAP}" >"${RUN_DIR}/window_map.txt"
@@ -44,7 +63,6 @@ cleanup() {
   docker rm -f "${CONTAINER_NAME}" >/dev/null 2>&1 || true
 }
 trap cleanup EXIT
-docker rm -f "${CONTAINER_NAME}" >/dev/null 2>&1 || true
 
 docker run --detach \
   --name "${CONTAINER_NAME}" \
@@ -64,6 +82,7 @@ docker run --detach \
   --env R003B_GLOBAL_LAYERS="${GLOBAL_LAYERS}" \
   --env R003D_WINDOW_MAP="${WINDOW_MAP}" \
   "${R003E_DOCKER_ARGS[@]}" \
+  "${R003F_DOCKER_ARGS[@]}" \
   --volume "${OVERLAY_DIR}:/r003-overlay:ro" \
   --volume "${MODEL_DIR}:/model:ro" \
   --entrypoint python3 \
@@ -116,6 +135,12 @@ while (( $(date +%s) < deadline )); do
           exit 1
         fi
       fi
+    fi
+    if [[ -n "${R003F_ENABLED:-}" ]]; then
+      grep -q "R003F hook_installed=1 compact_tiles=1 prefix_tokens=${R003F_PREFIX_TOKENS} map=${R003F_WINDOW_MAP}" "${RUN_DIR}/startup.log"
+      grep -q "R003F backend_patched=1 prefix_tokens=${R003F_PREFIX_TOKENS}" "${RUN_DIR}/startup.log"
+      grep -q "R003F verified=1 attention_layers=6 shortconv_layers=10 prefix_tokens=${R003F_PREFIX_TOKENS}" "${RUN_DIR}/startup.log"
+      grep -q 'R003F runner_patched=1 prefix_metadata=0' "${RUN_DIR}/startup.log"
     fi
     break
   fi

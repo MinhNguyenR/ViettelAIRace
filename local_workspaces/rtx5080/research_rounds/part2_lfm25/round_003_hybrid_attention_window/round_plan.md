@@ -150,3 +150,19 @@ continue scalar prefix tuning on this native path.
 Post-profile source audit also invalidated the original semantic assumption:
 native mm-prefix ranges do not remain visible to later queries. R003f must use
 a causal key-prefix predicate and prune the middle span before K/V loads.
+
+## Follow-Up 003f - Split-Range Online-Softmax Kernel
+
+Status: complete and retained as research-only evidence.
+
+The source/opportunity gate, numerical primitive, engine integration, profile,
+retrieval, full replay and short-quality phases are complete. Compact prefix-
+plus-recent tile pruning reaches the recent-only performance floor and gains
+two retrieval cases without control-pass loss. Restoring native segmented 3D
+decode was necessary; the forced-2D prototype was rejected.
+
+Two valid P64 replays average `61.7572`, slightly below safe8192 and materially
+below native W4096. GPQA proxy repeats two points below the control repeat, and
+the target H200 SM90 backend is untested. Close the branch without image,
+Compose or Portal promotion. Reopen only for full-overlap numerical identity
+and target-backend qualification, not another prefix-size sweep.

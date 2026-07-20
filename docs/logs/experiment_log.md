@@ -3774,3 +3774,19 @@ interpretation. The native predicate is `query_in_range AND key_in_range`, so
 queries after the prefix cannot attend to it. `USE_MM_PREFIX` also expands the
 tile loop to full `seq_len` and disables sliding-window pruning. R003e fails
 the intended semantics as well as the latency gate.
+
+## 2026-07-20 - R003f Compact Split-Range Triton Attention
+
+The exact vLLM 0.22.1 unified-attention source was patched with a compact
+causal prefix-plus-recent virtual tile list. Numerical tests pass for BF16,
+FP8 paged KV, overlapping ranges and segmented 3D decode with maximum absolute
+error `0.002719`. P64/W4096 profiles at `61.607/75.290ms` for turns 0/5,
+within `0.068ms` of the recent-only turn-5 floor. P32/P64/P128 each improve
+paired retrieval from `5/14` to `7/14` with no control-pass loss.
+
+The first forced-2D decode replay scored `54.9403`; compact segmented 3D
+repair raised performance. Two valid P64 replays score `63.1183` and
+`60.3961`, mean `61.7572`, which is `0.1304` below safe8192 and `2.7932`
+below native W4096. GPQA proxy repeats at `20/100` versus controls at
+`21..22/100`; all prompts are inside W4096. Retain source and measurements,
+but reject promotion, packaging and target claims.

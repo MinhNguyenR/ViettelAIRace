@@ -3427,3 +3427,27 @@ Decision:
 - do not reuse `mm_prefix_range` as an attention-sink mechanism;
 - reopen only with a split-range kernel or equivalent path that avoids work
   over the discarded middle span and first passes the same profile gate.
+
+## Decision 018 - Retain R003f Split-Range Primitive, Reject Promotion
+
+Evidence:
+
+- compact virtual tiles implement exact causal `prefix OR recent` semantics
+  and skip the middle span before paged-KV loads;
+- primitive BF16/FP8/3D numerical tests pass, and P64 turn-5 GPU time is only
+  `0.068ms` above recent-only;
+- all tested prefix sizes gain two paired retrieval cases with no control-pass
+  loss;
+- two valid P64 replays average `61.7572`, below safe8192 `61.8876` and native
+  W4096 `64.5504`;
+- P64 GPQA repeats at `20/100` versus controls `21..22/100`, and CUDA 12/H200
+  SM90 execution is not qualified.
+
+Decision:
+
+- retain the Apache-preserving primitive and compact evidence as research;
+- reject image, Compose and Portal promotion;
+- close prefix-size and scheduler tuning on this branch;
+- reopen only for full-overlap numerical identity plus target SM90 proof;
+- keep R002k as Portal incumbent and safe8192/native W4096 as the registered
+  quality/score research references.

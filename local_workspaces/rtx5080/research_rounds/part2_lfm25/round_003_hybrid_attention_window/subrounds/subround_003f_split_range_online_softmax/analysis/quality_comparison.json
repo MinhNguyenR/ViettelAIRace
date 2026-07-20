@@ -1,0 +1,51 @@
+{
+  "schema": "r003f.quality_comparison.v1",
+  "dataset": "gpqa_diamond_100",
+  "prompt_tokens": {
+    "min": 104,
+    "max": 847,
+    "window_active": false
+  },
+  "observations": {
+    "unbounded_control": [
+      {
+        "correct": 21,
+        "parsed": 89
+      },
+      {
+        "correct": 22,
+        "parsed": 90
+      }
+    ],
+    "safe_w8192": [
+      {
+        "correct": 23,
+        "parsed": 89
+      }
+    ],
+    "split_p64w4096": [
+      {
+        "run": "quality-p64w4096-20260720-130352",
+        "correct": 20,
+        "parsed": 87
+      },
+      {
+        "run": "quality-p64w4096-repeat-20260720-130558",
+        "correct": 20,
+        "parsed": 88
+      }
+    ]
+  },
+  "repeat_analysis": {
+    "p64_correct_set_stable": true,
+    "p64_output_hash_matches": 91,
+    "p64_correct_lost_vs_control_repeat": [
+      "gpqa_diamond_100:023",
+      "gpqa_diamond_100:036"
+    ],
+    "p64_correct_gained_vs_control_repeat": []
+  },
+  "interpretation": "The mask is inactive at these prompt lengths, so the two-point loss is an implementation or numerical-risk signal rather than context truncation.",
+  "strict_quality_equivalence_gate": false,
+  "decision": "do_not_promote_without_numerical_equivalence_repair"
+}
