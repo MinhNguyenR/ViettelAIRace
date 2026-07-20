@@ -3768,3 +3768,9 @@ The no-prefix diagnostic reached turn-0/turn-5 complete GPU time
 large cost in the non-empty disjoint-range path rather than in retained prefix
 length. All semantic candidates fail the profile gate, so retrieval, replay,
 GPQA and packaging are skipped.
+
+Exact source inspection after the profile corrected the initial API
+interpretation. The native predicate is `query_in_range AND key_in_range`, so
+queries after the prefix cannot attend to it. `USE_MM_PREFIX` also expands the
+tile loop to full `seq_len` and disables sliding-window pruning. R003e fails
+the intended semantics as well as the latency gate.

@@ -146,3 +146,7 @@ the performance gate, but each non-empty prefix size (`64/128/256`) increased
 turn-5 GPU time to about `187ms`, more than `72ms` worse than the unbounded
 control. The retrieval and replay phases were skipped by dependency. Do not
 continue scalar prefix tuning on this native path.
+
+Post-profile source audit also invalidated the original semantic assumption:
+native mm-prefix ranges do not remain visible to later queries. R003f must use
+a causal key-prefix predicate and prune the middle span before K/V loads.

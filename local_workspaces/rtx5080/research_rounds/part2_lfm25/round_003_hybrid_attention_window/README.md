@@ -157,3 +157,8 @@ had no meaningful effect. This isolates the regression to the native
 disjoint-range execution path. R003e closes before retrieval and full replay.
 A future implementation must compute only the two retained ranges and merge
 their softmax statistics rather than scan the discarded middle span.
+
+Post-profile source correction: native `mm_prefix_range` is bidirectional only
+when both query and key are inside the range. It does not preserve prefix keys
+for later queries, and its loop helper disables sliding-window tile pruning.
+R003e is therefore a rejected API screen, not a prefix-retention candidate.

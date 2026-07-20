@@ -15,3 +15,6 @@
   diagnostic and retains the information-loss boundary of plain window 4096.
 - Do not open retrieval or full replay for a non-empty native mm-prefix
   candidate: all three valid sizes fail the pre-registered profile gate.
+- Do not describe native `mm_prefix_range` as attention-sink retention. Its
+  exact predicate is `query_in_range AND key_in_range`; later queries cannot
+  see the range, and enabling it disables sliding-window tile pruning.

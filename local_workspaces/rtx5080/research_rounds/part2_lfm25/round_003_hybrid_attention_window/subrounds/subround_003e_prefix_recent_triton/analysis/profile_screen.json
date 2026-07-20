@@ -12,6 +12,11 @@
     "turn0_gpu_ms": 60.781921,
     "turn5_gpu_ms": 114.734528
   },
+  "semantic_contract": {
+    "native_mask": "(causal_and_window) or (query_in_range_and_key_in_range)",
+    "persistent_prefix_for_later_queries": false,
+    "sliding_window_tile_pruning_with_prefix": false
+  },
   "candidates": {
     "p0w4096": {
       "run": "p0w4096-valid-timing-20260720-015805",
@@ -64,5 +69,5 @@
       "reason": "R003e variables were not forwarded into Docker; all resolved to the p128 default"
     }
   ],
-  "decision": "close_all_nonempty_prefix_candidates_before_retrieval"
+  "decision": "close_wrong_semantics_and_profile_regression_before_retrieval"
 }

@@ -1,0 +1,115 @@
+{
+  "schema": "r003f.opportunity_model.v1",
+  "constants": {
+    "block_q": 4,
+    "tile_size": 32,
+    "window_tokens": 4096,
+    "prefix_tokens": 128,
+    "merge_overhead_stress_ms": 10.0
+  },
+  "panels": [
+    {
+      "turn": 0,
+      "prompt_tokens": 4000,
+      "tile_visits_per_kv_head_layer": {
+        "recent": 63000,
+        "native_mm": 125000,
+        "ideal_split": 63000
+      },
+      "native_to_recent_ratio": 1.984127,
+      "ideal_to_recent_ratio": 1.0,
+      "measured_recent_gpu_ms": 62.363998,
+      "measured_native_mm_gpu_ms": 70.30381,
+      "projected_ideal_gpu_ms": 62.363998,
+      "applied_merge_overhead_ms": 0.0,
+      "projected_with_merge_overhead_ms": 62.363998
+    },
+    {
+      "turn": 1,
+      "prompt_tokens": 8199,
+      "tile_visits_per_kv_head_layer": {
+        "recent": 135402,
+        "native_mm": 268802,
+        "ideal_split": 139426
+      },
+      "native_to_recent_ratio": 1.985214,
+      "ideal_to_recent_ratio": 1.029719,
+      "measured_recent_gpu_ms": 75.065788,
+      "measured_native_mm_gpu_ms": 94.478401,
+      "projected_ideal_gpu_ms": 75.651368,
+      "applied_merge_overhead_ms": 10.0,
+      "projected_with_merge_overhead_ms": 85.651368
+    },
+    {
+      "turn": 2,
+      "prompt_tokens": 12398,
+      "tile_visits_per_kv_head_layer": {
+        "recent": 135708,
+        "native_mm": 407128,
+        "ideal_split": 139916
+      },
+      "native_to_recent_ratio": 3.000029,
+      "ideal_to_recent_ratio": 1.031008,
+      "measured_recent_gpu_ms": 75.06675,
+      "measured_native_mm_gpu_ms": 113.289635,
+      "projected_ideal_gpu_ms": 75.659344,
+      "applied_merge_overhead_ms": 10.0,
+      "projected_with_merge_overhead_ms": 85.659344
+    },
+    {
+      "turn": 3,
+      "prompt_tokens": 16597,
+      "tile_visits_per_kv_head_layer": {
+        "recent": 135966,
+        "native_mm": 547026,
+        "ideal_split": 140182
+      },
+      "native_to_recent_ratio": 4.023256,
+      "ideal_to_recent_ratio": 1.031008,
+      "measured_recent_gpu_ms": 75.872673,
+      "measured_native_mm_gpu_ms": 134.42717,
+      "projected_ideal_gpu_ms": 76.473232,
+      "applied_merge_overhead_ms": 10.0,
+      "projected_with_merge_overhead_ms": 86.473232
+    },
+    {
+      "turn": 4,
+      "prompt_tokens": 20796,
+      "tile_visits_per_kv_head_layer": {
+        "recent": 135579,
+        "native_mm": 683150,
+        "ideal_split": 139783
+      },
+      "native_to_recent_ratio": 5.03876,
+      "ideal_to_recent_ratio": 1.031008,
+      "measured_recent_gpu_ms": 75.002014,
+      "measured_native_mm_gpu_ms": 160.588287,
+      "projected_ideal_gpu_ms": 75.659106,
+      "applied_merge_overhead_ms": 10.0,
+      "projected_with_merge_overhead_ms": 85.659106
+    },
+    {
+      "turn": 5,
+      "prompt_tokens": 24994,
+      "tile_visits_per_kv_head_layer": {
+        "recent": 135837,
+        "native_mm": 822394,
+        "ideal_split": 140049
+      },
+      "native_to_recent_ratio": 6.054271,
+      "ideal_to_recent_ratio": 1.031008,
+      "measured_recent_gpu_ms": 75.222595,
+      "measured_native_mm_gpu_ms": 187.862274,
+      "projected_ideal_gpu_ms": 75.913635,
+      "applied_merge_overhead_ms": 10.0,
+      "projected_with_merge_overhead_ms": 85.913635
+    }
+  ],
+  "gate": {
+    "turn0_limit_ms": 69.899209,
+    "turn5_limit_ms": 103.261075,
+    "turn0_projection_pass": true,
+    "turn5_stressed_projection_pass": true,
+    "decision": "open_primitive_prototype"
+  }
+}

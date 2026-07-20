@@ -3414,6 +3414,9 @@ Evidence:
   5 versus unbounded, despite exact metadata delivery and matched CUDA Graph;
 - prefix size has negligible effect, indicating that the non-empty disjoint
   range path, not the number of retained prefix tokens, owns the regression.
+- exact source proves the native range requires both query and key inside it;
+  later queries cannot see prefix keys, while the enabled path disables
+  sliding-window tile pruning and loops over full sequence length.
 
 Decision:
 
@@ -3421,5 +3424,6 @@ Decision:
 - retain `safe8192` as the balanced research reference and R002k as Portal
   incumbent;
 - do not sweep more native prefix sizes or package this overlay;
+- do not reuse `mm_prefix_range` as an attention-sink mechanism;
 - reopen only with a split-range kernel or equivalent path that avoids work
   over the discarded middle span and first passes the same profile gate.

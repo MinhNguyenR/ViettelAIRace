@@ -28,17 +28,24 @@ turn 5 versus `p0`, and changing the retained prefix from 64 to 256 tokens has
 almost no effect. The evidence therefore isolates the regression to the
 non-empty disjoint prefix-mask execution path, not prefix size.
 
-The likely mechanism is that the current Triton `mm_prefix_range` path scans
-or masks across the old span instead of executing only the two retained
-contiguous regions. That mechanism is an inference from the shape of the
-measurements; no child-kernel attribution was run in this subround.
+Exact post-profile source audit confirms the mechanism. When
+`USE_MM_PREFIX=True`, `compute_tile_loop_bounds` expands every query block to
+the full sequence and disables sliding-window tile pruning. K/V tiles in the
+discarded middle are loaded before the per-token mask is applied.
+
+The same audit also corrects the semantic interpretation: native
+`mm_prefix_range` uses `query_in_range AND key_in_range`. Later queries outside
+the range cannot attend to prefix keys. R003e therefore did not implement a
+persistent prefix plus recent window; it screened and rejected the wrong
+native API before any quality claim was made.
 
 ## Decision
 
 All semantic candidates fail the required turn-5 saving gate by more than
 `72ms`, so retrieval, full replay, GPQA, image and Compose work are skipped.
 `p0w4096` is not a prefix-retention candidate and inherits the known semantic
-risk of a plain 4096 window.
+risk of a plain 4096 window. The non-empty variants also fail the intended
+retention contract, independently of their latency failure.
 
 Do not retry scalar prefix sizes on this native path. A future branch must
 avoid the full-span disjoint-mask cost, for example by computing prefix and

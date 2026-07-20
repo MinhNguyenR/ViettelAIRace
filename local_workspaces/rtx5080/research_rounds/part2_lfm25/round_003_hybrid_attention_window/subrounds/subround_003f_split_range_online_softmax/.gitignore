@@ -1,0 +1,7 @@
+analysis/*
+!analysis/.gitkeep
+!analysis/opportunity_model.json
+!analysis/source_contract.json
+overlay/__pycache__/
+tests/__pycache__/
+*.pyc

@@ -6,15 +6,16 @@ Status: complete and rejected at the profile gate.
 
 R003d proved that reducing long-history attention work is valuable locally, but
 plain sliding windows discard every old token outside the horizon. This branch
-uses the vLLM 0.22.1 Triton attention path's existing `mm_prefix_range` mask:
+tested whether vLLM 0.22.1's Triton `mm_prefix_range` could provide a shortcut:
 
 ```text
-(causal AND recent-window) OR fixed request-local prefix range
+(causal AND recent-window) OR native mm-prefix range
 ```
 
-The intended retention shape is a small prefix (the first `P` tokens) plus the
-most recent `W` tokens. It keeps one model and one KV pool; no CPU KV copy,
-request trace inspection or output modification is used.
+Post-profile source audit proved that the native range requires both query and
+key to be inside the range, so it does not retain prefix keys for later
+queries. The experiment is retained as a rejected API screen, not as an
+implementation of the intended mask.
 
 ## Runtime Delta
 
@@ -76,3 +77,7 @@ Prefix size is therefore not the limiting variable. Enabling the native
 disjoint prefix-range path adds about `112ms` at turn 5 versus the no-prefix
 Triton control. All semantic candidates fail the latency gate, so no
 retrieval, full replay, quality or packaging phase opens.
+
+Exact source additionally proves that this API has the wrong retention
+semantics and disables sliding-window tile pruning. A custom causal sink-plus-
+recent kernel is required; native `mm_prefix_range` must not be reused.

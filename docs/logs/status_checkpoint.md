@@ -1450,6 +1450,8 @@ sweep or package a semantic-changing overlay without a rules decision.
   0/5 and confirms Triton/window itself is viable.
 - Prefixes `64/128/256` all reach about `70/187ms`; each is more than `72ms`
   worse than unbounded at turn 5 and fails the registered profile gate.
+- Source audit proves native mm-prefix is a bidirectional in-range predicate,
+  not persistent prefix visibility, and disables sliding-window tile pruning.
 - Invalid pre-fix runs are explicitly excluded, and all harnesses now assert
   exact R003e env propagation and metadata state.
 - No retrieval, replay, quality, image, Compose or Portal artifact follows.

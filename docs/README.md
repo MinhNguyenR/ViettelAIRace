@@ -151,7 +151,8 @@ Read in this order:
 40. `local_workspaces/rtx5080/research_rounds/part2_lfm25/round_003_hybrid_attention_window/subrounds/subround_003e_prefix_recent_triton/results.md`
     - completed native Triton prefix-plus-recent screen. The no-prefix window
       path is fast, but every non-empty prefix range adds about `112ms` at
-      turn 5 versus that control, so the branch closes before replay.
+      turn 5 versus that control. Exact source also proves the API does not
+      retain prefix keys for later queries, so the branch closes before replay.
 
 Do not reuse Qwen-specific numeric sweet spots or artifacts in a Part 2
 submission without a fresh LFM2.5 measurement.

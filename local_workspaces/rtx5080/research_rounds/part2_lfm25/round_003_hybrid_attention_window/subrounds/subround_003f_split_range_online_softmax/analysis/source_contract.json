@@ -1,0 +1,29 @@
+{
+  "schema": "r003f.source_contract.v1",
+  "image": "localhost/part2-lfm25-r002k:fused-bf16-greedy",
+  "vllm_version": "0.22.1",
+  "native_mm_prefix": {
+    "mask": "(causal_and_window) or (query_in_range_and_key_in_range)",
+    "persistent_prefix_for_later_queries": false,
+    "causal_inside_prefix": false,
+    "sliding_window_tile_pruning": false,
+    "loop_upper_bound": "full_seq_len"
+  },
+  "prefill": {
+    "kernel_layout": "2d",
+    "selection_reason": "max_seqlen_q_greater_than_1",
+    "returns_normalized_output_only": true,
+    "exposes_lse_to_wrapper": false
+  },
+  "decode": {
+    "kernel_layout_when_eligible": "3d_segmented",
+    "internal_partial_state": ["acc", "max", "expsum"],
+    "merge_kernel": "reduce_segments"
+  },
+  "custom_target": {
+    "mask": "causal and (key_in_prefix or key_in_recent_window)",
+    "must_prune_before_kv_load": true,
+    "can_reuse_fp8_paged_kv_addressing": true,
+    "can_use_existing_prefill_wrapper_without_change": false
+  }
+}

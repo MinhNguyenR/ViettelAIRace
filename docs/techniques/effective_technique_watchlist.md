@@ -1169,9 +1169,12 @@ backend/window control.
 Trade-off: enabling any native `mm_prefix_range` of 64, 128 or 256 tokens
 raises turn-5 GPU time to about `187ms`, roughly `112ms` slower than the
 no-prefix Triton control and more than `72ms` slower than unbounded. Prefix
-size is not the useful tuning variable on this execution path.
+size is not the useful tuning variable on this execution path. The native
+predicate also requires both query and key inside the range, so it does not
+retain prefix keys for later queries.
 
 Carry-forward: do not use native disjoint prefix ranges for the current
 candidate and do not sweep more sizes. Preserve the mask semantics and source
 audit for a future split-range online-softmax kernel that skips the discarded
-middle span; require profile and long-context retrieval gates before replay.
+middle span. The custom target must use causal `key_in_prefix`, not native
+mm-prefix semantics, and must pass profile and long-context retrieval gates.

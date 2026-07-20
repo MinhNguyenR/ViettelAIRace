@@ -265,3 +265,8 @@ range adds about `112ms` at turn 5 versus the no-prefix path. All semantic
 candidates fail the profile gate; retrieval, full replay and quality are
 skipped. The next branch must replace the full-span mask execution rather than
 sweep another prefix length.
+
+Exact source then proved the native predicate is
+`query_in_range AND key_in_range`, not persistent key-prefix visibility. It
+also expands each query block to full sequence length and disables
+sliding-window tile pruning. The branch fails both semantics and performance.
