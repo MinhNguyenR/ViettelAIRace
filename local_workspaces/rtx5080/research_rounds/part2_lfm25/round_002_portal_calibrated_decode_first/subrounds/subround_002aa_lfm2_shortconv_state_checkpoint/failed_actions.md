@@ -50,6 +50,10 @@
   no competing compute process was present.
 - Functional/quality runs may explicitly bypass the gate, but their latency
   and ERS must never enter performance promotion evidence.
+- A later five-sample check after the game was closed still measured
+  `17/19/18/3/2%` GPU utilization with `1242 MiB` used. The strict `10%`
+  criterion rejected another packaged replay before Docker startup; no timing
+  result was recorded from this attempt.
 
 ## Cross-process timing comparison
 

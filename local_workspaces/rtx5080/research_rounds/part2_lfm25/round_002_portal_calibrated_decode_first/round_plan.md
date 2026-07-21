@@ -257,4 +257,6 @@ quality proxy versus R002k `21/100`.
 
 The baked no-pad image passes functional replay after the research profiler
 was removed from its serving path. Keep it as a target probe only; R002k
-remains frozen incumbent until a registry digest is validated on H200.
+remains frozen incumbent until a registry digest is validated on H200. The
+immutable registry artifact is now Part 2 Attempt 06; no additional local
+latency run is admitted while the strict idle gate is contaminated.

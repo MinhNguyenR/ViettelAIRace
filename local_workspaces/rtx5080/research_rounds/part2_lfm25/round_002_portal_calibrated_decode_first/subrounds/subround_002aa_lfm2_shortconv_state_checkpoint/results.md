@@ -163,3 +163,6 @@ guard, runtime mode-file switching and a package path that cannot import R002y
 without profiler configuration. Python compilation, shell syntax and
 ShellCheck pass. Idle preflight repeatedly rejected `20-46%` desktop activity
 before Docker startup, and the baked image completed its full functional run.
+A post-package idle check after the game was closed still measured
+`17/19/18/3/2%` GPU utilization (`1242 MiB` used), so the strict gate rejected
+another replay before Docker startup. No additional latency claim is inferred.
