@@ -3451,3 +3451,35 @@ Decision:
 - reopen only for full-overlap numerical identity plus target SM90 proof;
 - keep R002k as Portal incumbent and safe8192/native W4096 as the registered
   quality/score research references.
+
+## 2026-07-21 - Qualify R002aa No-Pad For One H200 Probe
+
+Evidence:
+
+- sparse checkpointing preserves align-like capacity and removes one cached-
+  turn model step without changing cold-request handling;
+- two clean no-pad replay pairs win by `+0.2348/+1.5078` ERS and both quality
+  repeats score `22/100` versus R002k `21/100`;
+- pad32 reverses from positive micro timing to `-1.1367` ERS in full replay;
+- the repaired baked image starts without research profiler dependencies and
+  completes all `420/420` requests;
+- the clean no-pad mean gain is only `+0.8713`, below the observed R002k target
+  A/A range, and no H200 execution exists yet.
+
+Decision:
+
+- qualify no-pad R002aa for one immutable target probe;
+- reject pad16/pad32 and further local shape tuning;
+- exclude contaminated desktop runs from performance attribution;
+- keep R002k as Portal incumbent and rollback until H200 evidence exists;
+- never publish the first profiler-dependent image or include R002y in the
+  serving artifact.
+
+Status: local implementation, quality and package gates passed; target gate
+pending.
+
+The target artifact is now pinned as Part 2 Attempt 06 using registry digest
+`sha256:9e5586a637dfedec185a0665bb10284d00284be13cea0ce09f9238dfc7739765`.
+Do not alter its Compose before the H200 result; the next decision is whether
+to retain or roll back the sparse overlay based on target score, failure count,
+TTFT/TBT and the active accuracy selection.

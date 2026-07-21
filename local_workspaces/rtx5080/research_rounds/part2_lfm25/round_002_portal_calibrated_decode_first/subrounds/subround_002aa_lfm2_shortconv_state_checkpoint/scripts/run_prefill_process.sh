@@ -16,10 +16,6 @@ MAMBA_BLOCK_SIZE="${7:-auto}"
 DRIVER_MODE="${R002AA_DRIVER_MODE:-timing}"
 KINETO="${R002AA_KINETO:-0}"
 PREFILL_PAD_MULTIPLE="${R002AA_PREFILL_PAD_MULTIPLE:-0}"
-REQUIRE_IDLE_GPU="${R002AA_REQUIRE_IDLE_GPU:-1}"
-IDLE_MAX_GPU_UTIL="${R002AA_IDLE_MAX_GPU_UTIL:-10}"
-IDLE_MAX_MEMORY_MIB="${R002AA_IDLE_MAX_MEMORY_MIB:-2048}"
-IDLE_SAMPLE_COUNT="${R002AA_IDLE_SAMPLE_COUNT:-5}"
 if [[ "$CACHE_MODE" != "align" && "$CACHE_MODE" != "all" && "$CACHE_MODE" != "sparse" ]]; then
   echo "cache mode must be align, all or sparse" >&2
   exit 2
@@ -32,20 +28,6 @@ if [[ "$KINETO" != "0" && "$KINETO" != "1" ]]; then
   echo "R002AA_KINETO must be 0 or 1" >&2
   exit 2
 fi
-if [[ "$REQUIRE_IDLE_GPU" != "0" && "$REQUIRE_IDLE_GPU" != "1" ]]; then
-  echo "R002AA_REQUIRE_IDLE_GPU must be 0 or 1" >&2
-  exit 2
-fi
-for value in "$IDLE_MAX_GPU_UTIL" "$IDLE_MAX_MEMORY_MIB" "$IDLE_SAMPLE_COUNT"; do
-  if [[ ! "$value" =~ ^[0-9]+$ ]]; then
-    echo "R002aa idle-GPU thresholds must be non-negative integers" >&2
-    exit 2
-  fi
-done
-if (( IDLE_SAMPLE_COUNT < 1 )); then
-  echo "R002AA_IDLE_SAMPLE_COUNT must be positive" >&2
-  exit 2
-fi
 SERVER_CACHE_MODE="$CACHE_MODE"
 SPARSE_DUAL=0
 if [[ "$CACHE_MODE" == "sparse" ]]; then
@@ -54,6 +36,8 @@ if [[ "$CACHE_MODE" == "sparse" ]]; then
 fi
 
 SUBROUND_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck disable=SC1091
+source "$SUBROUND_DIR/scripts/gpu_idle_gate.sh"
 PARENT_DIR="$(cd "$SUBROUND_DIR/.." && pwd)"
 R002Y_DIR="$PARENT_DIR/subround_002y_cached_turn_prefill_attribution"
 ROOT_DIR="$(git -C "$SUBROUND_DIR" rev-parse --show-toplevel)"
@@ -66,34 +50,7 @@ CONTAINER_NAME="part2-lfm25-r002aa-$LABEL-$PORT"
 mkdir -p "$RUN_DIR"
 printf '%s\n' "$IMAGE" >"$RUN_DIR/image_ref.txt"
 
-IDLE_SAMPLE_FILE="$RUN_DIR/gpu_idle_samples.csv"
-printf 'timestamp,memory_total_mib,memory_used_mib,memory_free_mib,gpu_util_percent,power_w\n' \
-  >"$IDLE_SAMPLE_FILE"
-for (( sample = 0; sample < IDLE_SAMPLE_COUNT; sample++ )); do
-  printf '%s,' "$(date --iso-8601=seconds)" >>"$IDLE_SAMPLE_FILE"
-  nvidia-smi \
-    --query-gpu=memory.total,memory.used,memory.free,utilization.gpu,power.draw \
-    --format=csv,noheader,nounits >>"$IDLE_SAMPLE_FILE"
-  if (( sample + 1 < IDLE_SAMPLE_COUNT )); then
-    sleep 1
-  fi
-done
-if [[ "$REQUIRE_IDLE_GPU" == "1" ]] && ! awk -F, \
-  -v max_util="$IDLE_MAX_GPU_UTIL" \
-  -v max_memory="$IDLE_MAX_MEMORY_MIB" '
-    NR == 1 { next }
-    {
-      gsub(/[[:space:]]/, "", $3)
-      gsub(/[[:space:]]/, "", $5)
-      if (($3 + 0) > max_memory || ($5 + 0) > max_util) {
-        rejected = 1
-      }
-    }
-    END { exit rejected ? 1 : 0 }
-  ' "$IDLE_SAMPLE_FILE"; then
-  echo "R002aa idle-GPU gate rejected the run; close GPU workloads and inspect $IDLE_SAMPLE_FILE" >&2
-  exit 3
-fi
+r002aa_require_idle_gpu "$RUN_DIR"
 
 MODE_FILE_CONTAINER=""
 if [[ "$DRIVER_MODE" == "ab" ]]; then

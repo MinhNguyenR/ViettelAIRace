@@ -12,8 +12,44 @@
   is weak, but invalid for final policy selection or score projection.
 - Resolution: stop GPU work and repeat no-pad/pad32 twice only after the game
   is closed and a clean background check passes.
-- Prevention: the runner now rejects startup by default if any of five
-  preflight samples exceeds `10%` GPU utilization or `2048 MiB` used memory.
+- Prevention: the runner records five samples, hard-rejects above `20%` or
+  `2048 MiB`, and allows at most one `10-20%` compositor spike for functional
+  work. Performance analysis applies a stricter post-run `<=10%` rule.
+
+## Packaged profiler dependency crash
+
+- Run: `packaging/outputs/full_replay/functional-candidate-...-112850`.
+- Symptom: startup and health passed, then the first request killed EngineCore;
+  all 330 graded requests failed.
+- Root cause: the initial package copied and installed R002y's research
+  profiler without setting `R002Y_PROFILE_ARM`, `R002Y_PROFILE_FINALIZE` and
+  `R002Y_PROFILE_OUTPUT_ROOT`. The first model execution raised
+  `KeyError: R002Y_PROFILE_ARM`.
+- Resolution: `_patch_runner` installs R002y only when all three variables are
+  present; the serving Dockerfile no longer copies the profiler or adds its
+  directory to `PYTHONPATH`.
+- Verification: a focused no-profiler unit test passes and the rebuilt image
+  completes `420/420`, with `330/330` graded successes.
+
+## Pad32 micro-to-replay reversal
+
+- Two clean in-process repeats showed cached GPU deltas of `-0.474ms` and
+  `-1.889ms`, so pad32 passed the micro opening gate.
+- Complete replay scored `55.0941` versus matched control `56.2308`; TPOT p95
+  regressed by about `8.37%`.
+- Classification: shape-local micro gain does not transfer through scheduler
+  occupancy and decode contention. Pad32 is rejected and not packaged.
+
+## Desktop-compositor replay contamination
+
+- The third no-pad candidate sampled `13%` GPU in preflight and later lost
+  `2.4908` points to its control. It is excluded by the strict analysis gate.
+- Two later strict retries were rejected before Docker startup at `20-31%`,
+  and a packaged strict retry was rejected at `41-46%`.
+- `nvidia-smi pmon` attributed active graphics work primarily to `gnome-shell`;
+  no competing compute process was present.
+- Functional/quality runs may explicitly bypass the gate, but their latency
+  and ERS must never enter performance promotion evidence.
 
 ## Cross-process timing comparison
 

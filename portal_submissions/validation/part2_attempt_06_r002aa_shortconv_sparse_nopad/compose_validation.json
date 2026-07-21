@@ -1,0 +1,23 @@
+{
+  "attempt": "part2_attempt_06",
+  "compose": "portal_submissions/part2_attempt_06_lfm25_r002aa_shortconv_sparse_nopad_seq8_b16384.yml",
+  "compose_sha256": "e319dd9958ead7e4c571fe89c0d8de72375f6a28fe9b3f13764295e9902bb485",
+  "compose_size_bytes": 1216,
+  "compose_parse": "pass",
+  "diff_from_part2_attempt_04": [
+    "services.model.image"
+  ],
+  "image": "minhnguyenrobert/viettel-ai-race-vllm@sha256:9e5586a637dfedec185a0665bb10284d00284be13cea0ce09f9238dfc7739765",
+  "base_r002k_digest": "sha256:10f819c0e765bb579b89caccac4de5f17984c2fd5342335130832dc7ad93f6f5",
+  "local_focused_tests": {
+    "passed": 6,
+    "failed": 0
+  },
+  "local_packaged_replay": {
+    "total_requests": 420,
+    "graded_requests": 330,
+    "failed_requests": 0,
+    "performance_evidence": false
+  },
+  "portal_status": "pending"
+}

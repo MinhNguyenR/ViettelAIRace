@@ -6,6 +6,7 @@ import sys
 import tempfile
 import types
 import unittest
+from unittest import mock
 
 
 MODULE_PATH = Path(__file__).parents[1] / "overlay" / "lfm2_all_shortconv.py"
@@ -262,6 +263,29 @@ class SparseControlTests(unittest.TestCase):
             mode_file.write_text("invalid\n")
             with self.assertRaises(RuntimeError):
                 self.overlay._refresh_sparse_mode()
+
+    def test_packaged_runner_does_not_require_profiler_environment(self) -> None:
+        class GPUModelRunner:
+            def _pad_for_sequence_parallelism(self, tokens: int) -> int:
+                return tokens
+
+        fused = types.ModuleType("fused_greedy_head")
+        fused._patch_runner = lambda module: setattr(module, "r002k", True)
+        profile_env = {
+            "R002Y_PROFILE_ARM": "",
+            "R002Y_PROFILE_FINALIZE": "",
+            "R002Y_PROFILE_OUTPUT_ROOT": "",
+        }
+        with (
+            mock.patch.dict(sys.modules, {"fused_greedy_head": fused}),
+            mock.patch.dict(self.overlay.os.environ, profile_env, clear=False),
+        ):
+            sys.modules.pop("prefill_profiler", None)
+            module = types.SimpleNamespace(GPUModelRunner=GPUModelRunner)
+            self.overlay._patch_runner(module)
+
+        self.assertTrue(module.r002k)
+        self.assertEqual(GPUModelRunner()._pad_for_sequence_parallelism(17), 17)
 
 
 if __name__ == "__main__":

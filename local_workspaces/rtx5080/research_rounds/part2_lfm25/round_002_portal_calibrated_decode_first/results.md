@@ -876,9 +876,26 @@ the prior state, crossed full-block state and final partial-tail state. Sparse
 capacity is `1,592,154` tokens at `.78`, versus about `530k` for all/block16,
 and cached turns change from two model steps to one.
 
-One-process A/B indicates cached-turn gains, but the user confirmed a game was
-active and launch telemetry recorded `23-39%` background GPU utilization.
-No-pad showed `-2.992ms` cached GPU mean, pad16 `-0.712ms`, and pad32
-`-3.744/-3.894ms`; these are directional and cannot select a final policy.
-Stop GPU work, repeat no-pad/pad32 on an idle device, then run cold quality and
-the complete 420-request replay. No R002aa serving artifact exists yet.
+The game-contaminated screen was repeated on an idle device. Pad32 won both
+micro repeats but lost `1.1367` points on complete replay and regressed TPOT
+p95 by about `8.37%`; it is rejected. No-pad was mixed in micro timing but won
+both strictly clean complete-trace pairs:
+
+```text
+pair 1: control 56.2308, candidate 56.4657, delta +0.2348
+pair 2: control 54.3962, candidate 55.9040, delta +1.5078
+mean:                                            +0.8713
+paired TTFT mean delta:                           -6.4606ms
+paired TPOT mean delta:                           +0.0395ms
+```
+
+A third negative pair is retained but excluded because candidate preflight
+sampled `13%` GPU. Two no-pad GPQA runs score `22/100` against R002k `21/100`,
+with no request errors or reference-correct losses.
+
+The first package incorrectly installed R002y's research profiler and crashed
+on missing `R002Y_PROFILE_ARM`. The rebuilt serving image excludes the
+profiler, passes a 420-request functional replay and has local digest
+`sha256:9e5586a637dfedec185a0665bb10284d00284be13cea0ce09f9238dfc7739765`.
+Its functional score is excluded because desktop GPU load was `41-46%`.
+R002aa is locally qualified as a target probe; R002k remains incumbent.

@@ -520,10 +520,17 @@ def _patch_sampler(module: ModuleType) -> None:
 
 def _patch_runner(module: ModuleType) -> None:
     from fused_greedy_head import _patch_runner as patch_r002k_runner
-    from prefill_profiler import _patch_runner as patch_r002y_runner
 
     patch_r002k_runner(module)
-    patch_r002y_runner(module)
+    profile_env = (
+        "R002Y_PROFILE_ARM",
+        "R002Y_PROFILE_FINALIZE",
+        "R002Y_PROFILE_OUTPUT_ROOT",
+    )
+    if all(os.environ.get(name) for name in profile_env):
+        from prefill_profiler import _patch_runner as patch_r002y_runner
+
+        patch_r002y_runner(module)
     base = getattr(module, "GPUModelRunner", None)
     if base is None or getattr(base, "_r002aa_prefill_padding_patched", False):
         return
@@ -605,4 +612,11 @@ def install_import_hook() -> None:
         module = sys.modules.get(fullname)
         if module is not None:
             patcher(module)
+    print(
+        "R002AA_RUNTIME "
+        f"sparse_enabled={int(_sparse_enabled())} "
+        f"mode_file={int(bool(_SPARSE_MODE_FILE))}",
+        file=sys.stderr,
+        flush=True,
+    )
     print("R002AA_ALL_SHORTCONV hook_installed=1", file=sys.stderr, flush=True)

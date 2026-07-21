@@ -3790,3 +3790,34 @@ repair raised performance. Two valid P64 replays score `63.1183` and
 below native W4096. GPQA proxy repeats at `20/100` versus controls at
 `21..22/100`; all prompts are inside W4096. Retain source and measurements,
 but reject promotion, packaging and target claims.
+
+## 2026-07-21 - Part 2 R002aa Sparse ShortConv Boundary Checkpoint
+
+R002aa replaced the cached-turn alignment step with one sparse checkpoint per
+crossing request. Capacity remained about `1.59M` tokens at local memory
+fraction `0.78`, versus about `0.53M` for the all-boundary diagnostic. Cached
+turns kept the expected `4000/8192/12384/16592/20784` prefix progression and
+changed from two model steps to one.
+
+No-pad micro repeats disagreed in sign. Pad32 won both micro repeats but lost
+full replay `55.0941` versus control `56.2308` and raised TPOT p95, so padding
+was rejected. No-pad clean pairs scored `56.4657` versus `56.2308` and
+`55.9040` versus `54.3962`; mean delta was `+0.8713`, mean TTFT delta
+`-6.4606ms` and mean TPOT delta `+0.0395ms`. A third pair lost `2.4908` but
+had a `13%` candidate preflight sample and remains recorded as contaminated.
+
+The fixed GPQA proxy scored `22/100` twice versus R002k `21/100`, with no
+reference-correct answer becoming wrong. The first baked image crashed all
+graded requests because it imported R002y's profiler without its environment
+variables. The repaired image omits that profiler, has local digest
+`sha256:9e5586a637dfedec185a0665bb10284d00284be13cea0ce09f9238dfc7739765`
+and completes `420/420`; its desktop-contaminated score is functional evidence
+only. R002aa is locally qualified for an immutable H200 probe, not promoted.
+
+The repaired image was pushed as
+`minhnguyenrobert/viettel-ai-race-vllm:part2-r002aa-shortconv-sparse-nopad-20260721`
+and resolved to registry digest
+`sha256:9e5586a637dfedec185a0665bb10284d00284be13cea0ce09f9238dfc7739765`.
+Part 2 Attempt 06 is a 1,216-byte Compose whose only difference from Attempt
+04 is that image digest; its Compose SHA-256 is
+`e319dd9958ead7e4c571fe89c0d8de72375f6a28fe9b3f13764295e9902bb485`.

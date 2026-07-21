@@ -1,6 +1,7 @@
 # R002aa Round Plan
 
-Status: phases A-C implemented. Idle qualification and phase D remain pending.
+Status: phases A-E complete through immutable artifact creation. H200/Portal
+target validation is pending.
 
 ## A. Source Audit
 
@@ -26,8 +27,8 @@ Status: phases A-C implemented. Idle qualification and phase D remain pending.
 - Add focused scheduler/allocation/state-index unit tests.
 
 Implementation status: functional proof complete. Sparse capacity is
-align-like and cached turns execute in one model step. Five focused
-pure-Python tests pass; idle-GPU qualification remains open.
+align-like and cached turns execute in one model step. Six focused
+pure-Python tests pass, including the package-without-profiler contract.
 
 ## C2. One-Process Timing Qualification
 
@@ -41,6 +42,11 @@ pure-Python tests pass; idle-GPU qualification remains open.
 - Reject the run before engine startup when the five-sample idle gate exceeds
   `10%` utilization or `2048 MiB` used memory.
 
+Status: complete. Pad32 passed both micro repeats but failed complete replay.
+No-pad was mixed in micro timing and therefore advanced only through matched
+full replay. Two strictly clean pairs were positive; one pair with a `13%`
+candidate sample is classified as contaminated and excluded.
+
 ## D. Promotion
 
 - Run paired 100-question quality regression.
@@ -48,5 +54,20 @@ pure-Python tests pass; idle-GPU qualification remains open.
 - Promote only after output, TPOT, TTFT, capacity and ERS gates all pass.
 - Otherwise close R002aa and retain R002k.
 
-Current status: blocked only on a clean local GPU window, not on code or source
-access. No new GPU run should start while the game is active.
+Status: locally complete. No-pad passes paired accuracy, failure, capacity and
+clean full-replay gates. The baked package also passes a 420-request functional
+replay after removing the research profiler from the serving image.
+
+## E. Immutable Target Artifact
+
+- Push only the repaired no-pad image; never publish the profiler-dependent
+  failure image.
+- Pin the registry digest rather than the mutable tag.
+- Keep every Attempt 04 flag unchanged so the target comparison changes only
+  the serving image.
+- Validate Compose syntax, one-variable diff and the 1 MiB upload limit.
+
+Status: complete. Registry digest
+`sha256:9e5586a637dfedec185a0665bb10284d00284be13cea0ce09f9238dfc7739765`
+is pinned in Part 2 Attempt 06. R002k remains incumbent until that artifact is
+probed on H200.

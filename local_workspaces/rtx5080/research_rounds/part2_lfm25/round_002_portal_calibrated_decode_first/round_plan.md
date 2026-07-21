@@ -246,14 +246,15 @@ candidate artifact.
 
 ## Phase Q - Sparse ShortConv Boundary Checkpoint
 
-Status: implementation complete; idle qualification pending.
+Status: locally complete; immutable H200 probe pending.
 
 R002aa replaces align mode's second tiny full-model step with one sparse
 boundary checkpoint and one final running state. The proof retains align-like
-capacity and executes cached turns in one step. The initial one-process
-no-pad/pad16/pad32 screen ran under `23-39%` game-induced background GPU load,
-so it is directional only.
+capacity and executes cached turns in one step. Pad32 passed micro timing but
+lost `1.1367` points on complete replay. No-pad won two clean paired replays by
+`+0.2348/+1.5078`, preserved all 420 requests, and scored `22/100` twice on the
+quality proxy versus R002k `21/100`.
 
-Do not package from the contaminated screen. Repeat no-pad and pad32 twice on
-an idle GPU, then require cold quality and complete replay gates before any
-promotion. R002k remains frozen until those gates pass.
+The baked no-pad image passes functional replay after the research profiler
+was removed from its serving path. Keep it as a target probe only; R002k
+remains frozen incumbent until a registry digest is validated on H200.

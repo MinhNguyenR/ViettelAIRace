@@ -183,10 +183,13 @@ Subround 002aa attacks a different R002y finding: align-mode cached turns run
 an extra `2-14` token full-model step to preserve the final ShortConv block
 boundary. A sparse dual-checkpoint overlay now stores the boundary and final
 state in one forward, retains about `1.59M` local cache tokens and changes
-cached turns from two model steps to one. In-process screens are directional
-only because a game held background GPU utilization at `23-39%`; clean
-no-pad/pad32 repeats, cold quality and full replay remain mandatory. R002k is
-still the incumbent and no R002aa package exists.
+cached turns from two model steps to one. Pad32 failed full replay. No-pad won
+two strictly clean matched pairs by `+0.2348/+1.5078` points and scored
+`22/100` twice versus R002k `21/100`, with no reference-correct answer lost.
+The baked package completes `420/420` after removing an accidental profiler
+dependency. R002aa is a local H200 probe; R002k is still the incumbent.
+Its immutable registry digest is pinned in Part 2 Attempt 06; no target result
+has been attributed yet.
 
 ## Files
 
@@ -198,6 +201,8 @@ still the incumbent and no R002aa package exists.
 - `tests/`: deterministic driver/scorer tests.
 - `portal_submissions/part2_attempt_02_lfm25_fp8pt_kvfp8_async_interactive_seq8_b16384.yml`:
   immutable upload artifact in the repository root submission folder.
+- `portal_submissions/part2_attempt_06_lfm25_r002aa_shortconv_sparse_nopad_seq8_b16384.yml`:
+  one-variable R002aa H200 probe, pinned to the qualified registry digest.
 - `subrounds/subround_002a_turn_semantics_bracket/`: completed causal
   append-only versus fixed-size cache-policy bracket.
 - `subrounds/subround_002b_fixed4k_no_prefix_tuning/`: active tuning of the
@@ -263,6 +268,6 @@ still the incumbent and no R002aa package exists.
 - `subrounds/subround_002z_h200_fa3_boundary/`: complete exact-image H200 FA3
   source boundary; automatic dispatch already activates the safe mechanisms,
   so the branch closes without a candidate.
-- `subrounds/subround_002aa_lfm2_shortconv_state_checkpoint/`: active sparse
-  ShortConv boundary-state implementation, capacity proof and one-process A/B
-  harness; final selection waits for an idle GPU.
+- `subrounds/subround_002aa_lfm2_shortconv_state_checkpoint/`: locally
+  qualified sparse ShortConv no-pad package; target validation remains pending
+  and R002k stays rollback.

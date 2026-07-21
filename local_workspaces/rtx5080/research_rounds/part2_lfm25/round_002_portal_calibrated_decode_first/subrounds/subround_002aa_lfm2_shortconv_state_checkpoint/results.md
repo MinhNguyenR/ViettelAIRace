@@ -1,7 +1,7 @@
 # R002aa Results - Sparse ShortConv Boundary Checkpoint
 
-Status: active checkpoint. Functional and capacity proofs pass; final latency,
-quality and replay gates are pending an idle GPU.
+Status: locally qualified no-pad target probe with immutable registry artifact.
+R002k remains the Portal incumbent until R002aa is validated on H200.
 
 ## Answer
 
@@ -10,9 +10,10 @@ memory cost. The sparse implementation stores only the final crossed
 full-block ShortConv state plus the final partial-tail state. It preserves
 align-like cache capacity and changes turns 1-5 from two model steps to one.
 
-This is not yet a submission candidate. The available no-pad/pad16/pad32
-latency screens were collected while a game used the GPU and cannot choose the
-final padding policy.
+The local candidate uses sparse checkpointing with no shape padding. Pad32
+looked best in micro timing but failed the complete-trace gate. Two clean
+no-pad replay pairs and two quality runs pass; a baked image passes functional
+replay without mounting source from the workspace.
 
 ## Structural Results
 
@@ -58,7 +59,7 @@ The dominant variation comes from FP8/BF16 GEMM and normalization at different
 token shapes. This opened a runner-native padding screen rather than a custom
 ShortConv kernel.
 
-## Contaminated Directional Screen
+## Initial Contaminated Directional Screen
 
 All values below came from one-process alternating A/B, but the GPU already
 showed `23-39%` utilization because a game was active:
@@ -74,26 +75,91 @@ pad32 C      -3.894ms            -4.250ms
 Negative is faster. These results support continuing sparse and dropping
 pad16, but they do not authorize choosing no-pad or pad32.
 
-## Next Gate
+## Idle Micro Qualification
 
-1. With the game closed, require a clean GPU background check.
-2. Run two in-process A/B repeats for no-pad and pad32, using two reversed-order
-   pairs per run.
-3. Keep a policy only if cached GPU and TTFT deltas are positive in both runs.
-4. Run cold 100-case GPQA and the complete 420-request public replay.
-5. Promote only on no accuracy drop, no failures, TPOT regression below 3%
-   and ERS gain beyond replay noise.
+After the game closed, two reversed-order A/B repeats produced:
 
-No image, Compose file or Portal submission has been created.
+```text
+policy/run     cached GPU delta    cached TTFT delta
+no-pad 1             +1.055ms             +0.945ms
+no-pad 2             -1.704ms             -1.445ms
+pad32 1              -0.474ms             -0.242ms
+pad32 2              -1.889ms             -1.539ms
+```
+
+No-pad did not pass the micro repeat-sign gate. Pad32 did, but that gate only
+opened full replay; it did not authorize promotion.
+
+## Complete Replay
+
+Pad32 scored `55.0941` against matched control `56.2308`, a `-1.1367`-point
+loss. It also raised TPOT p95 from `4.1627ms` to `4.5111ms`. Reject padding.
+
+No-pad then ran three matched pairs. The analyzer requires every preflight GPU
+sample to be at most `10%` before a pair contributes to promotion evidence:
+
+```text
+pair   control   candidate   delta      max GPU preflight   classification
+1      56.2308    56.4657   +0.2348          6% / 6%        clean
+2      54.3962    55.9040   +1.5078          8% / 4%        clean
+3      56.5328    54.0420   -2.4908          4% / 13%       contaminated
+```
+
+The two clean pairs both finish `420/420` with zero graded failures. Their
+mean score delta is `+0.8713` points; mean TTFT delta is `-6.4606ms`, while
+mean TPOT delta is `+0.0395ms`. The contaminated pair is retained in the
+record and excluded by the registered environmental criterion.
+
+## Quality Gate
+
+Two no-pad runs over the fixed 100-case GPQA proxy both score `22/100`, versus
+R002k `21/100`:
+
+```text
+run                 A          B
+request errors      0          0
+parse failures     10         12
+prediction changes  4          8
+reference correct -> wrong
+                     0          0
+reference wrong -> correct
+                     1          1
+```
+
+The exact prediction guard remains false because the FP8 incumbent itself is
+not sequence-stable, but both accuracy and reference-correctness guards pass.
+The quality run intentionally ignored desktop latency; GPU background cannot
+alter its pass/fail arithmetic in the absence of request errors.
+
+## Packaging Gate
+
+The first baked image included R002y's profiling hook but omitted its research
+path variables. The first request raised `KeyError: R002Y_PROFILE_ARM`, killed
+EngineCore and caused all 330 graded requests to fail. The serving overlay now
+installs R002y only when all three profiler variables exist, and the submission
+image no longer includes the profiler.
+
+The rebuilt image has local digest
+`sha256:9e5586a637dfedec185a0665bb10284d00284be13cea0ce09f9238dfc7739765`
+and size `9,223,634,914` bytes. It starts with sparse mode and R002k fused
+greedy enabled, leaves R002y disabled, and completes `420/420` requests with
+`330/330` graded successes. That functional run sampled `41-46%` desktop GPU
+before launch; its `52.5512` score is explicitly not performance evidence.
+
+## Decision
+
+Keep R002aa as a locally qualified target probe and retain R002k as incumbent.
+The immutable digest is pinned in Part 2 Attempt 06; the next gate is its H200
+execution, not another local tuning sweep. Do not submit pad32, do not include
+R002y in the image, and do not use the contaminated functional score for
+expected Portal performance.
 
 ## Verification
 
-The focused CPU-only suite passes `5/5` checks: cached-only final-boundary
+The focused CPU-only suite passes `6/6` checks: cached-only final-boundary
 scheduler bypass, one-block boundary reservation/allocation with cold-request
 exclusion, cold metadata fail-closed behavior, the non-sparse all-mode manager
-guard and runtime mode-file switching. Python compilation and shell syntax
-checks also pass. The newly
-strengthened cold-request native fallback and idle-GPU preflight still require
-their first clean runtime exercise. A synthetic `35%` utilization / `3000 MiB`
-preflight was rejected with exit code `3` before Docker startup, confirming the
-contamination guard itself.
+guard, runtime mode-file switching and a package path that cannot import R002y
+without profiler configuration. Python compilation, shell syntax and
+ShellCheck pass. Idle preflight repeatedly rejected `20-46%` desktop activity
+before Docker startup, and the baked image completed its full functional run.

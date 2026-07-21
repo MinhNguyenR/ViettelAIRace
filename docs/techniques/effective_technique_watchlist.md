@@ -1197,3 +1197,25 @@ and segmented online-softmax reduction as reusable kernel technique. Do not
 package this implementation or sweep prefix sizes. Reopen only after the
 full-overlap path is numerically equivalent to native and the exact CUDA 13.x/
 SM90 image passes compilation, correctness and replay gates.
+
+## Sparse ShortConv Boundary Checkpoint - R002aa Target Probe
+
+Effect: the LFM2 cached-turn alignment step can be removed without retaining
+all historical ShortConv block states. Store only the final crossed full-block
+state and the final partial-tail state, then reuse that boundary in the same
+model process. The no-pad implementation preserves about `1.59M` local cache
+tokens, changes cached turns from two model steps to one and wins both clean
+full-replay pairs by `+0.2348/+1.5078` ERS. Their mean TTFT improvement is
+`6.4606ms`; two fixed GPQA runs score `22/100` versus R002k `21/100`.
+
+Trade-off: micro timing is sign-inconsistent, the clean mean gain of `+0.8713`
+is smaller than observed process variance, and TPOT rises by `0.0395ms` on
+average. Shape padding looked positive in micro timing but lost `1.1367` ERS
+and raised TPOT p95 in full replay. The overlay patches vLLM internals and has
+not yet executed on the H200 SM90 target.
+
+Carry-forward: retain no-pad only as an immutable H200 target probe. Keep cold
+requests, allocation failures and incomplete metadata fail-closed; never
+include the optional R002y profiler in the submission image. Keep R002k as the
+rollback and incumbent until target evidence attributes a gain. Complete
+replay outranks micro timing for every future checkpoint or padding variant.

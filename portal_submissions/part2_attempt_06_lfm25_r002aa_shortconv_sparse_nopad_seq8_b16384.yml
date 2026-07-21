@@ -1,0 +1,43 @@
+services:
+  model:
+    image: minhnguyenrobert/viettel-ai-race-vllm@sha256:9e5586a637dfedec185a0665bb10284d00284be13cea0ce09f9238dfc7739765
+    entrypoint:
+      - python3
+      - -m
+      - vllm.entrypoints.openai.api_server
+    command:
+      - --model=/model
+      - --served-model-name=LFM2.5-1.2B-Instruct
+      - --host=0.0.0.0
+      - --port=8000
+      - --max-model-len=32768
+      - --gpu-memory-utilization=0.95
+      - --tensor-parallel-size=1
+      - --model-impl=vllm
+      - --performance-mode=interactivity
+      - --max-num-seqs=8
+      - --max-num-batched-tokens=16384
+      - --enable-prefix-caching
+      - --enable-chunked-prefill
+      - --mamba-cache-mode=align
+      - --mamba-cache-dtype=bfloat16
+      - --quantization=fp8_per_tensor
+      - --kv-cache-dtype=fp8_e4m3
+      - --async-scheduling
+      - --disable-uvicorn-access-log
+      - --disable-log-stats
+    environment:
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      TOKENIZERS_PARALLELISM: "false"
+    ports:
+      - "8000:8000"
+    shm_size: "2g"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities:
+                - gpu

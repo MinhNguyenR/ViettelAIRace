@@ -153,6 +153,13 @@ Read in this order:
       path is fast, but every non-empty prefix range adds about `112ms` at
       turn 5 versus that control. Exact source also proves the API does not
       retain prefix keys for later queries, so the branch closes before replay.
+41. `local_workspaces/rtx5080/research_rounds/part2_lfm25/round_002_portal_calibrated_decode_first/subrounds/subround_002aa_lfm2_shortconv_state_checkpoint/README.md`
+    - locally qualified sparse ShortConv boundary checkpoint. The no-pad path
+      removes the cached-turn alignment step while preserving about `1.59M`
+      tokens of local cache capacity; two clean replay pairs average `+0.8713`
+      ERS, two GPQA runs score `22/100` versus R002k `21/100`, and the baked
+      image completes `420/420`. R002k remains incumbent until an immutable
+      R002aa digest is measured on H200.
 
 Do not reuse Qwen-specific numeric sweet spots or artifacts in a Part 2
 submission without a fresh LFM2.5 measurement.
