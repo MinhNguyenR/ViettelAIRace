@@ -99,6 +99,3 @@ Docker Compose files are prepared under `docker/`. Do not start serving until `M
 - `submissions/`: final competition artifacts only.
   - `submissions/phase1/`: Docker Compose submission skeleton.
 
-## Rule
-
-Không gọi một tối ưu là thành công nếu chưa có benchmark tái lập trước và sau thay đổi.
